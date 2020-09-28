@@ -15,5 +15,11 @@ int main() {
                                                     version_major(request.version), version_minor(request.version));
     free(request.request_uri);
 
+    Response response;
+    char resp[] = "HTTP/1.1 200 OK\r\nContent-Length:20\r\n";
+    bool re = parse_response(resp, &response);
+    printf("VERSION: %u.%u, STATUS: %d, LENGTH: %d\n", version_major(response.version), version_minor(response.version),
+                                                      response.status, response.content_length);
+
     return 0;
 }
