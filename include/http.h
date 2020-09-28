@@ -33,6 +33,7 @@ typedef struct Response {
     uint32_t version;
     StatusCode status;
     uint32_t content_length;
+    char* data;
 } Response;
 
 
@@ -40,6 +41,6 @@ bool parse_request(const char* msg, Request* request);
 
 bool parse_response(const char* msg, Response* response);
 
-bool create_request(Request* request, char* msg);
+uint32_t create_request(Request* request, char** msg);
 
-bool create_response(Response* response, char* msg);
+uint32_t create_response(Response* response, char** msg);

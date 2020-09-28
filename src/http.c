@@ -103,7 +103,7 @@ bool parse_response(const char* msg, Response* response) {
     line = strtok(message, "\r\n");
     while (line) {
         line_len += strlen(line);
-        printf("len: %d\n",strlen(line));
+        printf("len: %d\n", strlen(line));
         char* temp_msg = malloc(strlen(line));
         strcpy(temp_msg, line);
         char* token = strtok(temp_msg, ":");
@@ -121,8 +121,19 @@ bool parse_response(const char* msg, Response* response) {
     return valid;
 }
 
-bool create_request(Request* request, char* msg) {
+uint32_t create_request(Request* request, char** msg) {
 }
 
-bool create_response(Response* response, char* msg) {
+uint32_t create_response(Response* response, char** msg) {
+   char header[100]; 
+   sprintf(header, "HTTP/%u.%u %3d OK\r\nContent-Length:%d\r\n\r\n", version_major(response->version), version_minor(response->version),
+                                                 response->status, response->content_length);
+   uint32_t size = strlen(header) + response->content_length;
+   *msg = malloc(size);
+   memcpy(*msg, header, strlen(header) - 1);
+   memcpy(*msg + strlen(header), response->data, response->content_length);
+
+   printf("m: %s\n", *msg);
+
+   return size;
 }

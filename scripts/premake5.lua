@@ -93,7 +93,7 @@ project "server"
     filter {}
 
     files {
-        path.join(DIR, "src/**.c"),
+        path.join(DIR, "src/server.c"),
     }
 
     removefiles {
