@@ -50,7 +50,7 @@ bool parse_request(const char* msg, Request* request) {
     char* token = strtok(temp_msg, " ");
     request->method = get_method(token);
     if (request->method == METHOD_UNDEFINED) {
-        valid = false;
+        return false;
     }
 
     // Request-Uri

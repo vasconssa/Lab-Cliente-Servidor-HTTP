@@ -28,6 +28,7 @@ project "common"
     
     files {
         path.join(DIR, "src/http.c"),
+        path.join(DIR, "src/url.c"),
     }
 
 --project "sx"

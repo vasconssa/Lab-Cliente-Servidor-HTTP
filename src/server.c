@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include <sys/types.h>
@@ -8,8 +9,6 @@
 #include <netinet/in.h>
 #include <pthread.h>
 #include "http.h"
-
-#define PORT "3490"
 
 #define BACKLOG 10
 
@@ -68,16 +67,23 @@ void* hello_server(void* fd) {
 }
 
 int main(int argc, char* argv[]) {
-    struct addrinfo hints = { .ai_flags = AI_PASSIVE, .ai_family = AF_INET, .ai_socktype = SOCK_STREAM, 0};
+    if (argc != 4) {
+        fprintf(stderr, "Usage: ./client server_addr port /path/to/file\n");
+        exit(1);
+    }
+    struct addrinfo hints = { 
+        .ai_flags = AI_PASSIVE,
+        .ai_family = AF_INET,
+        .ai_socktype = SOCK_STREAM, 0};
 
     struct addrinfo *servinfo;
-    int rv = getaddrinfo(NULL, PORT, &hints, &servinfo);
+    int rv = getaddrinfo(argv[1], argv[2], &hints, &servinfo);
     if (rv != 0) {
         printf("getaddrinfo: %s\n", gai_strerror(rv));
-        return 1;
+        exit(1);
     }
 
-    struct addrinfo *p;
+    struct addrinfo* p;
     int sockfd;
     for (p = servinfo; p != NULL; p = p->ai_next) {
         sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
