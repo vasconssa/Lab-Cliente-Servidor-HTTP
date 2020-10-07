@@ -5,38 +5,43 @@
 #include <stdlib.h>
 
 Method get_method(const char* msg) {
-    if (strcmp(msg, "GET") == 0) {
-        return GET;
+    if (msg != NULL) {
+        if (strcmp(msg, "GET") == 0) {
+            return GET;
+        }
     }
     return METHOD_UNDEFINED;
 }
 
-uint32_t get_version(const char* msg) {
-
-    if (strcmp(msg, "HTTP/0.9") == 0) {
-        return make_version(0, 9);
-    } else if (strcmp(msg, "HTTP/1.0") == 0) {
-        return make_version(1, 0);
-    } else if (strcmp(msg, "HTTP/1.1") == 0) {
-        return make_version(1, 1);
+int get_version(const char* msg) {
+    if (msg != NULL) {
+        if (strcmp(msg, "HTTP/0.9") == 0) {
+            return make_version(0, 9);
+        } else if (strcmp(msg, "HTTP/1.0") == 0) {
+            return make_version(1, 0);
+        } else if (strcmp(msg, "HTTP/1.1") == 0) {
+            return make_version(1, 1);
+        }
     }
 
     return VERSION_UNDEFINED;
 }
 
 StatusCode get_status_code(const char* msg) {
-    if (strcmp(msg, "200") == 0) {
-        return OK;
-    } else if (strcmp(msg, "400") == 0) {
-        return BAD_REQUEST;
-    } else if (strcmp(msg, "404") == 0) {
-        return NOT_FOUND;
+    if (msg != NULL) {
+        if (strcmp(msg, "200") == 0) {
+            return OK;
+        } else if (strcmp(msg, "400") == 0) {
+            return BAD_REQUEST;
+        } else if (strcmp(msg, "404") == 0) {
+            return NOT_FOUND;
+        }
     }
 
     return STATUS_INVALID;
 }
 
-bool parse_request(const char* msg, Request* request) {
+bool parse_req_statusline(const char* msg, Request* request) {
     bool valid = true;
 
     char* message = malloc(strlen(msg));
@@ -55,7 +60,7 @@ bool parse_request(const char* msg, Request* request) {
 
     // Request-Uri
     token = strtok(NULL, " ");
-    uint32_t uri_len = strlen(token);
+    int uri_len = strlen(token);
     request->request_uri = malloc(uri_len);
     strcpy(request->request_uri, token);
 
@@ -82,7 +87,7 @@ bool parse_response(const char* msg, Response* response) {
     char* message = malloc(strlen(msg));
     strcpy(message, msg);
     char* line = strtok(message, "\r\n");
-    uint32_t line_len = strlen(line);
+    int line_len = strlen(line);
 
     // Parse Status Line : HTTP-Version SP Status-Code SP Reason-Phrase CRLF
     char* temp_msg = malloc(strlen(line));
@@ -103,7 +108,7 @@ bool parse_response(const char* msg, Response* response) {
     line = strtok(message, "\r\n");
     while (line) {
         line_len += strlen(line);
-        printf("len: %d\n", strlen(line));
+        printf("len: %lu\n", strlen(line));
         char* temp_msg = malloc(strlen(line));
         strcpy(temp_msg, line);
         char* token = strtok(temp_msg, ":");
@@ -121,16 +126,16 @@ bool parse_response(const char* msg, Response* response) {
     return valid;
 }
 
-uint32_t create_request(Request* request, char** msg) {
+int create_request(Request* request, char** msg) {
 }
 
-uint32_t create_response(Response* response, char** msg) {
+int create_response(Response* response, char** msg) {
    char header[100]; 
    sprintf(header, "HTTP/%u.%u %3d OK\r\nContent-Length:%d\r\n\r\n", version_major(response->version), version_minor(response->version),
                                                  response->status, response->content_length);
-   uint32_t size = strlen(header) + response->content_length;
+   int size = strlen(header) + response->content_length;
    *msg = malloc(size);
-   memcpy(*msg, header, strlen(header) - 1);
+   memcpy(*msg, header, strlen(header));
    memcpy(*msg + strlen(header), response->data, response->content_length);
 
    printf("m: %s\n", *msg);

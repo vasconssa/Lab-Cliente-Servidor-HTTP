@@ -11,6 +11,10 @@
 #include "http.h"
 
 #define BACKLOG 10
+// Max file size: 1 MB
+#define MAX_FILE_SIZE 1048576 
+
+char* main_dir = "./";
 
 void* get_in_addr(struct sockaddr* sa) {
     if (sa->sa_family == AF_INET) {
@@ -24,27 +28,150 @@ struct thread_data {
     int fd;
 };
 
+int sendall(int fd, char* buf, int* len) {
+    int total = 0;
+    int bytesleft = *len;
+    int n;
+
+    while(total < *len) {
+        n = send(fd, buf + total, bytesleft, 0);
+        if (n == 1) {
+            break;
+        }
+        total += n;
+        bytesleft -= n;
+    }
+
+    *len = total;
+
+    return  n == -1? -1 : 0;
+}
+
+bool read_line(char* tcp_buffer, int* tcp_size, char** line) {
+
+    bool valid = false;
+    *line = NULL;
+
+    char* temp_line = malloc(*tcp_size + 1);
+    printf("tcp_size: %d\n", *tcp_size);
+    memcpy(temp_line, tcp_buffer, *tcp_size);
+    temp_line[*tcp_size] = '\0';
+    char* token = strstr(temp_line, "\r\n");
+    if (token != NULL) {
+        *(token + 2) = '\0';
+        *tcp_size = strlen(temp_line);
+        printf("tcp_size final: %d\n", *tcp_size);
+        *line = malloc(*tcp_size + 1);
+        strcpy(*line, temp_line);
+        printf("head: %s\n", *line);
+        valid = true;
+        /**tcp_size += 2;*/
+    }
+    free(temp_line);
+
+    return valid;
+}
+
+// Parse Status Line : Method SP Request-URI SP HTTP-Version CRLF
+bool read_request(int fd, Request* request) {
+    bool valid_line = false;
+    bool status_line_found = false;
+    char* line;
+    char temp_buffer[2048];
+    memset(temp_buffer, 'a', 2048);
+
+    int total_received = recv(fd, temp_buffer, 2048, 0);
+    int num_bytes = total_received;
+    if (num_bytes == -1) {
+        perror("recv");
+        return -1;
+    }
+
+    if (read_line(temp_buffer, &num_bytes, &line)) {
+        status_line_found = parse_req_statusline(line, request);
+        valid_line = true;
+        free(line);
+    }
+    printf("num_bytes: %d\n", num_bytes);
+
+    bool req_finished = false;
+    if (num_bytes > 0) {
+        memmove(temp_buffer, temp_buffer + num_bytes, 2048 - num_bytes);
+        /*memset(temp_buffer + (2048 - num_bytes), 'a', num_bytes);*/
+        int n = num_bytes;
+        num_bytes = total_received - num_bytes;
+        total_received -= n;
+    } else {
+        total_received = recv(fd, temp_buffer, 2048, 0);
+        num_bytes = total_received;
+        if (num_bytes == -1) {
+            perror("recv");
+            return -1;
+        }
+    }
+
+        printf("buf: %s\n", temp_buffer);
+    while (!req_finished) {
+        read_line(temp_buffer, &num_bytes, &line);
+        printf("num_bytes: %d\n", num_bytes);
+        if (num_bytes == 2) {
+            req_finished = true;
+        }
+
+        if (!req_finished) {
+            if (num_bytes > 0) {
+                memmove(temp_buffer, temp_buffer + num_bytes, 2048 - num_bytes);
+                /*memset(temp_buffer + (total_received - num_bytes), 'a', num_bytes);*/
+                int n = num_bytes;
+                num_bytes = total_received - num_bytes;
+                total_received -= n;
+            } else {
+                total_received = recv(fd, temp_buffer, 2048, 0);
+                num_bytes = total_received;
+                if (num_bytes == -1) {
+                    perror("recv");
+                    return -1;
+                }
+            }
+        }
+        printf("buf: %s\n", temp_buffer);
+        free(line);
+    }
+
+    return valid_line && status_line_found && req_finished;
+
+}
+
 void* hello_server(void* fd) {
     struct thread_data data = *((struct thread_data*)fd);
     int n = data.id;
     int new_fd = data.fd;
     int rv = 0;
-    char buffer[200000];
-    /*sprintf(buffer, "Hello, world from thread %d!\n", n);*/
     Request request;
-    uint32_t num_bytes = recv(new_fd, buffer, 1000, 0);
-    bool res = parse_request(buffer, &request);
+
+    bool res = read_request(new_fd, &request);
+    if (res) {
+        printf("valid\n");
+    } else {
+        printf("error\n");
+    }
     printf("METHOD: %u, URI: %s, VERSION: %u.%u\n", request.method, request.request_uri, 
                                                     version_major(request.version), version_minor(request.version));
 
-    FILE* hello = fopen(request.request_uri + 1, "rb");
-    uint32_t size = 0;
+    char* file_path = malloc(strlen(main_dir) + strlen(request.request_uri) + 2);
+    strcpy(file_path, main_dir);
+    strcat(file_path, request.request_uri);
+
+    FILE* hello = fopen(file_path, "rb");
+    printf("file: %s\n", file_path);
+    int size = 0;
+    char file_buf[MAX_FILE_SIZE];
     if (hello) {
         fseek(hello, 0, SEEK_END);
         size = ftell(hello);
-        printf("size: %d\n", size);
+        printf("size file: %d\n", size);
         rewind(hello);
-        fread(buffer, sizeof(char), size, hello);
+        fread(file_buf, sizeof(char), size, hello);
         fclose(hello);
     }
     char* resp = NULL;
@@ -52,13 +179,14 @@ void* hello_server(void* fd) {
     response.version = request.version;
     response.status = OK;
     response.content_length = size;
-    response.data = buffer;
+    response.data = file_buf;
     size = create_response(&response, &resp);
-    resp[size - 1] = '\0';
+    /*resp[size - 1] = '\0';*/
+    resp[size] = '\0';
     printf("size: %d\n", size);
     printf("%s\n", resp);
 
-    rv = send(new_fd, resp, size, 0);
+    rv = sendall(new_fd, resp, &size);
     if (rv == -1) {
         perror("send");
     }

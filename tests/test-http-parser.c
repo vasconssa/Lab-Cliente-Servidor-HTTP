@@ -4,8 +4,8 @@
 
 int main() {
     Request request;
-    char msg[] = "GET /index.html HTTP/1.1\r\n\r\n";
-    bool res = parse_request(msg, &request);
+    char msg[] = "GET /index.html HTTP/1.1\r\n";
+    bool res = parse_req_statusline(msg, &request);
 
     if (!res) {
         printf("failed\n");
