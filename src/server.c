@@ -28,49 +28,7 @@ struct thread_data {
     int fd;
 };
 
-int sendall(int fd, char* buf, int* len) {
-    int total = 0;
-    int bytesleft = *len;
-    int n;
 
-    while(total < *len) {
-        n = send(fd, buf + total, bytesleft, 0);
-        if (n == 1) {
-            break;
-        }
-        total += n;
-        bytesleft -= n;
-    }
-
-    *len = total;
-
-    return  n == -1? -1 : 0;
-}
-
-bool read_line(char* tcp_buffer, int* tcp_size, char** line) {
-
-    bool valid = false;
-    *line = NULL;
-
-    char* temp_line = malloc(*tcp_size + 1);
-    printf("tcp_size: %d\n", *tcp_size);
-    memcpy(temp_line, tcp_buffer, *tcp_size);
-    temp_line[*tcp_size] = '\0';
-    char* token = strstr(temp_line, "\r\n");
-    if (token != NULL) {
-        *(token + 2) = '\0';
-        *tcp_size = strlen(temp_line);
-        printf("tcp_size final: %d\n", *tcp_size);
-        *line = malloc(*tcp_size + 1);
-        strcpy(*line, temp_line);
-        printf("head: %s\n", *line);
-        valid = true;
-        /**tcp_size += 2;*/
-    }
-    free(temp_line);
-
-    return valid;
-}
 
 // Parse Status Line : Method SP Request-URI SP HTTP-Version CRLF
 bool read_request(int fd, Request* request) {
@@ -112,8 +70,8 @@ bool read_request(int fd, Request* request) {
 
         printf("buf: %s\n", temp_buffer);
     while (!req_finished) {
-        read_line(temp_buffer, &num_bytes, &line);
         printf("num_bytes: %d\n", num_bytes);
+        read_line(temp_buffer, &num_bytes, &line);
         if (num_bytes == 2) {
             req_finished = true;
         }
@@ -134,9 +92,10 @@ bool read_request(int fd, Request* request) {
                 }
             }
         }
-        printf("buf: %s\n", temp_buffer);
+        /*printf("buf: %s\n", temp_buffer);*/
         free(line);
     }
+    printf("aki\n");
 
     return valid_line && status_line_found && req_finished;
 
@@ -199,6 +158,7 @@ int main(int argc, char* argv[]) {
         fprintf(stderr, "Usage: ./client server_addr port /path/to/file\n");
         exit(1);
     }
+    main_dir = argv[3];
     struct addrinfo hints = { 
         .ai_flags = AI_PASSIVE,
         .ai_family = AF_INET,

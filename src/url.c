@@ -46,8 +46,10 @@ UrlInfo parse_url(const char* url) {
     strcpy(info.addr, token);
     if (token != NULL) {
         token = strtok(NULL, ":");
-        printf("port: %s\n\n", token);
-        info.port = atoi(token);
+        printf("port: %s\n", token);
+        info.port = malloc(strlen(token) + 1);
+
+        strcpy(info.port, token);
     } else {
         info.valid = false;
         return info;

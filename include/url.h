@@ -10,7 +10,7 @@
 typedef struct UrlInfo {
     char addr[MAX_ADDR_SIZE];
     bool valid;
-    uint16_t port;
+    char* port;
     char* file_path;
 } UrlInfo;
 

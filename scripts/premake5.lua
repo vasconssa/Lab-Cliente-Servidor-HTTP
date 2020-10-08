@@ -101,5 +101,41 @@ project "server"
         path.join(DIR, "src/sx/*.c"),
     }
 
+project "client"
+    kind "ConsoleApp"
+    language "C"
+
+    includedirs {
+        path.join(DIR, "include"),
+        path.join(DIR, "3rdparty"),
+    }
+
+    links {
+        --"sx",
+    }
+    
+    prebuildcommands('{MKDIR} %{cfg.buildtarget.directory}/www')
+
+
+    filter "platforms:Linux64"
+    system "Linux"
+    architecture "x86_64"
+    symbols "on"
+
+    links {
+        "common",
+        "pthread",
+        "m",
+    }
+    
+    filter {}
+
+    files {
+        path.join(DIR, "src/client.c"),
+    }
+
+    removefiles {
+        path.join(DIR, "src/sx/*.c"),
+    }
 
 include "tests.lua"

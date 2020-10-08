@@ -36,8 +36,13 @@ typedef struct Response {
     char* data;
 } Response;
 
+int sendall(int fd, char* buf, int* len);
+
+bool read_line(char* tcp_buffer, int* tcp_size, char** line);
 
 bool parse_req_statusline(const char* msg, Request* request);
+
+bool parse_resp_statusline(const char* msg, Response* response);
 
 bool parse_response(const char* msg, Response* response);
 
