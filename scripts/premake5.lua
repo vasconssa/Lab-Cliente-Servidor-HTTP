@@ -138,4 +138,4 @@ project "client"
         path.join(DIR, "src/sx/*.c"),
     }
 
-include "tests.lua"
+--include "tests.lua"

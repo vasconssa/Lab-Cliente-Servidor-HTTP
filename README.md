@@ -6,18 +6,21 @@ Laboratório: Implementando Cliente e Servidor HTTP
 
 ## Installation
 
+
 ```bash
 premake5 --file=scripts/premake5.lua gmake2
-make -C build/ config=debug_linux64
+make -C build/ config=debug_linux64 
 ```
 
 # Usage
+
+Create desired files inside desired folder, in examples was used www/ folder
 
 ### Server
 
 ```bash
 cd build/bin/Linux64/Debug
-./server
+./server 0.0.0.0 8000 .
 ```
 
 ### Client
@@ -25,6 +28,11 @@ cd build/bin/Linux64/Debug
 ```bash
 telnet 127.0.0.1 3490
 GET /www/index.html HTTP/1.1\r\n\r\n
+```
+or
+
+```bash
+./client http://localhost:8000/www/index.html http://localhost:8000/www/index2.html
 ```
 
 ## License
