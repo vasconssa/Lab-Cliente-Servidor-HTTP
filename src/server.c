@@ -101,7 +101,7 @@ bool read_request(int fd, Request* request) {
 
 }
 
-void* hello_server(void* fd) {
+void* communicate(void* fd) {
     struct thread_data data = *((struct thread_data*)fd);
     int n = data.id;
     int new_fd = data.fd;
@@ -121,17 +121,18 @@ void* hello_server(void* fd) {
     strcpy(file_path, main_dir);
     strcat(file_path, request.request_uri);
 
-    FILE* hello = fopen(file_path, "rb");
+    FILE* file = fopen(file_path, "rb");
     printf("file: %s\n", file_path);
     int size = 0;
-    char file_buf[MAX_FILE_SIZE];
-    if (hello) {
-        fseek(hello, 0, SEEK_END);
-        size = ftell(hello);
+    char* file_buf = NULL;
+    if (file != NULL) {
+        fseek(file, 0, SEEK_END);
+        size = ftell(file);
+        file_buf = malloc(size);
         printf("size file: %d\n", size);
-        rewind(hello);
-        fread(file_buf, sizeof(char), size, hello);
-        fclose(hello);
+        rewind(file);
+        fread(file_buf, sizeof(char), size, file);
+        fclose(file);
     }
     char* resp = NULL;
     Response response;
@@ -140,8 +141,11 @@ void* hello_server(void* fd) {
     response.content_length = size;
     response.data = file_buf;
     size = create_response(&response, &resp);
+    if (file_buf != NULL) {
+        free(file_buf);
+    }
     /*resp[size - 1] = '\0';*/
-    resp[size] = '\0';
+    /*resp[size] = '\0';*/
     printf("size: %d\n", size);
     printf("%s\n", resp);
 
@@ -149,6 +153,7 @@ void* hello_server(void* fd) {
     if (rv == -1) {
         perror("send");
     }
+
     shutdown(new_fd, 2);
     pthread_exit(NULL);
 }
@@ -226,7 +231,7 @@ int main(int argc, char* argv[]) {
         pthread_t tid;
 
         struct thread_data data = {count, new_fd};
-        int rc = pthread_create(&tid, NULL, hello_server, (void *)&data);
+        int rc = pthread_create(&tid, NULL, communicate, (void *)&data);
         
     }
 

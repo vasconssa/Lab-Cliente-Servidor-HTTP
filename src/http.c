@@ -46,12 +46,12 @@ StatusCode get_status_code(const char* msg) {
 bool parse_req_statusline(const char* msg, Request* request) {
     bool valid = true;
 
-    char* message = malloc(strlen(msg));
+    char* message = malloc(strlen(msg) + 1);
     strcpy(message, msg);
     char* line = strtok(message, "\r\n");
 
     // Parse Status Line : Method SP Request-URI SP HTTP-Version CRLF
-    char* temp_msg = malloc(strlen(line));
+    char* temp_msg = malloc(strlen(line) + 1);
     strcpy(temp_msg, line);
     // Method
     char* token = strtok(temp_msg, " ");
@@ -65,7 +65,7 @@ bool parse_req_statusline(const char* msg, Request* request) {
     valid = token != NULL;
     if (valid) {
         int uri_len = strlen(token);
-        request->request_uri = malloc(uri_len);
+        request->request_uri = malloc(uri_len + 1);
         strcpy(request->request_uri, token);
     }
 
@@ -92,10 +92,9 @@ bool parse_req_statusline(const char* msg, Request* request) {
 bool parse_resp_statusline(const char* msg, Response* response) {
     bool valid = true;
 
-    char* message = malloc(strlen(msg));
+    char* message = malloc(strlen(msg) + 1);
     strcpy(message, msg);
     char* line = strtok(message, "\r\n");
-    int line_len = strlen(line);
 
     // Parse Status Line : HTTP-Version SP Status-Code SP Reason-Phrase CRLF
     char* temp_msg = malloc(strlen(line));
@@ -240,15 +239,16 @@ int sendall(int fd, char* buf, int* len) {
 }
 
 int create_response(Response* response, char** msg) {
-   char header[100]; 
+   char header[1000]; 
    sprintf(header, "HTTP/%u.%u %3d OK\r\nContent-Length:%d\r\n\r\n", version_major(response->version), version_minor(response->version),
                                                  response->status, response->content_length);
    int size = strlen(header) + response->content_length;
    *msg = malloc(size);
-   memcpy(*msg, header, strlen(header));
-   memcpy(*msg + strlen(header), response->data, response->content_length);
+   if (*msg != NULL) {
+       memcpy(*msg, header, strlen(header));
+       memcpy(*msg + strlen(header), response->data, response->content_length);
+   }
 
-   printf("m: %s\n", *msg);
 
    return size;
 }
