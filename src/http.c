@@ -175,7 +175,7 @@ bool read_line(char* tcp_buffer, int* tcp_size, char** line) {
         printf("tcp_size final: %d\n", *tcp_size);
         *line = malloc(*tcp_size + 1);
         strcpy(*line, temp_line);
-        printf("head: %s\n", *line);
+        /*printf("head: %s\n", *line);*/
         valid = true;
         /**tcp_size += 2;*/
     }
