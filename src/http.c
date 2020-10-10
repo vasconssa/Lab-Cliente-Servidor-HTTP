@@ -253,8 +253,14 @@ int sendall(int fd, char* buf, int* len) {
 
 int create_response(Response* response, char** msg) {
    char header[1000]; 
-   sprintf(header, "HTTP/%u.%u %3d OK\r\nContent-Length:%d\r\n\r\n", version_major(response->version), version_minor(response->version),
-                                                 response->status, response->content_length);
+   char* reason_phrase = "OK";
+   if (response->status == BAD_REQUEST) {
+       reason_phrase = "Bad Request";
+   } else if (response->status == NOT_FOUND) {
+       reason_phrase = "Not Found";
+   }
+   sprintf(header, "HTTP/%u.%u %3d %s\r\nContent-Length:%d\r\n\r\n", version_major(response->version), version_minor(response->version),
+                                                 response->status, reason_phrase, response->content_length);
    int size = strlen(header) + response->content_length;
    *msg = malloc(size);
    if (*msg != NULL) {

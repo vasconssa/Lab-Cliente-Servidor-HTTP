@@ -129,6 +129,7 @@ void* communicate(void* fd) {
     int new_fd = data.fd;
     int rv = 0;
     Request request;
+    request.request_addr = NULL;
 
     bool res = read_request(new_fd, &request);
     if (res) {
@@ -155,7 +156,7 @@ void* communicate(void* fd) {
     if (file != NULL) {
         fseek(file, 0, SEEK_END);
         size = ftell(file);
-        if (size > 0) {
+        if (size >= 0) {
             file_buf = malloc(size);
             printf("size file: %d\n", size);
             rewind(file);
@@ -168,13 +169,26 @@ void* communicate(void* fd) {
     char* resp_msg = NULL;
     Response response;
     response.version = request.version;
-    response.status = OK;
-    response.content_length = size;
-    response.data = file_buf;
-    size = create_response(&response, &resp_msg);
-    if (file_buf != NULL) {
-        free(file_buf);
+    if (!res) {
+        response.status = BAD_REQUEST;
+        char* bad_req = "<html>400 Bad Request</html>";
+        response.content_length = strlen(bad_req);
+        response.data = malloc(strlen(bad_req) + 1);
+        strcpy(response.data, bad_req);
+    } else {
+        if (size >= 0 && file != NULL) {
+            response.status = OK;
+            response.content_length = size;
+            response.data = file_buf;
+        } else {
+            response.status = NOT_FOUND;
+            char* not_found = "<html>404 Not Found</html>";
+            response.content_length = strlen(not_found);
+            response.data = malloc(strlen(not_found) + 1);
+            strcpy(response.data, not_found);
+        }
     }
+    size = create_response(&response, &resp_msg);
     /*resp[size - 1] = '\0';*/
     /*resp[size] = '\0';*/
     printf("size: %d\n", size);

@@ -181,6 +181,7 @@ void* communicate(void* td) {
            }
            path_len--;
         }
+        
 
         char* file_path = path + path_len + 2;
         printf("path fopen: %s\n", file_path);

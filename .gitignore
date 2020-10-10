@@ -1,4 +1,5 @@
 .*
 !/.gitignore
 build/bin/
+build/obj/
 .clangd/
