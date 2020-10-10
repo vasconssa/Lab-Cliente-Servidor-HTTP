@@ -22,6 +22,7 @@ typedef struct thread_data {
     int id;
     int fd;
     char* path;
+    char* addr;
 } thread_data;
 
 bool read_response(int fd, Response* response) {
@@ -34,9 +35,10 @@ bool read_response(int fd, Response* response) {
 
     int total_received = recv(fd, temp_buffer, 2048, 0);
     int num_bytes = total_received;
-    if (num_bytes == -1) {
+    if (num_bytes == -1 || total_received == 0) {
         perror("recv");
-        return false;
+        shutdown(fd, 2);
+        pthread_exit(NULL);
     }
     bool complete_line = false;
     bool req_finished = false;
@@ -66,7 +68,7 @@ bool read_response(int fd, Response* response) {
             memcpy(line_temp_buffer + line_temp_buffer_size, temp_buffer, total_received);
             line_temp_buffer_size += total_received;
             num_bytes = line_temp_buffer_size;
-            if (num_bytes == -1) {
+            if (num_bytes == -1 || total_received == 0) {
                 perror("recv");
                 shutdown(fd, 2);
                 pthread_exit(NULL);
@@ -107,7 +109,7 @@ bool read_response(int fd, Response* response) {
                     memcpy(line_temp_buffer + line_temp_buffer_size, temp_buffer, total_received);
                     line_temp_buffer_size += total_received;
                     num_bytes = line_temp_buffer_size;
-                    if (num_bytes == -1) {
+                    if (num_bytes == -1 || total_received == 0) {
                         perror("recv");
                         shutdown(fd, 2);
                         pthread_exit(NULL);
@@ -130,7 +132,7 @@ bool read_response(int fd, Response* response) {
 
     while (length < response->content_length) {
         num_bytes = recv(fd, temp_buffer, 2048, 0);
-        if (num_bytes == -1) {
+        if (num_bytes == -1 || total_received == 0) {
             perror("recv");
             shutdown(fd, 2);
             pthread_exit(NULL);
@@ -149,11 +151,13 @@ void* communicate(void* td) {
     int n = data.id;
     int fd = data.fd;
     char* path = data.path;
+    char* addr = data.addr;
     int rv = 0;
     Request request;
     request.method = GET;
     request.request_uri = path;
-    request.version = make_version(1, 0);
+    request.request_addr = addr;
+    request.version = make_version(1, 1);
     char* msg;
 
     int size = create_request(&request, &msg);
@@ -228,7 +232,9 @@ int main(int argc, char* argv[]) {
         }
         int rv = getaddrinfo(url_info.addr, port, &hints, &servinfo);
         td[n].path = malloc(strlen(url_info.file_path) + 1);
+        td[n].addr = malloc(strlen(url_info.addr) + 1);
         strcpy(td[n].path, url_info.file_path);
+        strcpy(td[n].addr, url_info.addr);
         destroy_url(&url_info);
 
         if (rv != 0) {

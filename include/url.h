@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 #ifndef MAX_ADDR_SIZE
-#define MAX_ADDR_SIZE 200
+#define MAX_ADDR_SIZE 4096
 #endif
 
 typedef struct UrlInfo {

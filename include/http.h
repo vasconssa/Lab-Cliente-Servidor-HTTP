@@ -25,6 +25,7 @@ typedef enum Method {
 
 typedef struct Request {
     Method method;
+    char* request_addr;
     char* request_uri;
     int version;
 } Request;

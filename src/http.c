@@ -211,10 +211,22 @@ int create_request(Request* request, char** msg) {
     } else {
         return 0;
     }
+    if (request->request_addr != NULL) {
+        /*size += strlen(request->request_addr);*/
+    } else {
+        return 0;
+    }
+    char* www = strstr(request->request_addr, "www");
+    char* addr = request->request_addr;
+    if (www != NULL) {
+        addr += 4;
+    }
+    size += strlen(addr);
 
-    size += 7;
+    size += 14;
     *msg = malloc(size);
-    sprintf(*msg, "%s %s %s\r\n\r\n", method, request->request_uri, version);
+    sprintf(*msg, "%s %s %s\r\nHost: %s\r\n\r\n", method, request->request_uri, version, addr);
+    printf("size msg: %lu\n", strlen(*msg));
 
     return size;
 }
@@ -258,7 +270,13 @@ void destroy_request(Request* request) {
     if (request->request_uri) {
         free(request->request_uri);
     }
+    if (request->request_addr) {
+        free(request->request_addr);
+    }
 }
 
 void destroy_response(Response* response) {
+    if (response->content_length > 0 && response->data != NULL) {
+        free(response->data);
+    }
 }
