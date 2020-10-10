@@ -10,6 +10,7 @@ UrlInfo parse_url(const char* url) {
     char* temp_url = malloc(strlen(url) + 1);
     strcpy(temp_url, url);
     //strip http:
+    /*char* http = strstr(temp_url, "http://");*/
     char* token = strtok(temp_url, "//");
     if (token == NULL || strcmp(token, "http:") != 0) {
         info.valid = false;
@@ -21,11 +22,11 @@ UrlInfo parse_url(const char* url) {
     if (token != NULL) {
         printf("addr port: %s\n", token);
         strcpy(info.addr, token);
+        token += strlen(token);
     } else {
         info.valid = false;
         return info;
     }
-    token += strlen(token);
     if (url[token - temp_url] != '\0') {
         const char* u = &url[token - temp_url];
         printf("file path: %s\n", u);
@@ -39,21 +40,39 @@ UrlInfo parse_url(const char* url) {
         info.file_path[1] = '\0';
     }
 
-    char temp[MAX_ADDR_SIZE];
+    char* temp = malloc(strlen(info.addr) + 1);
     strcpy(temp, info.addr);
+    printf("temp: %s\n", temp);
     token = strtok(temp, ":");
-    printf("address: %s\n", token);
-    strcpy(info.addr, token);
-    if (token != NULL) {
-        token = strtok(NULL, ":");
-        printf("port: %s\n", token);
-        info.port = malloc(strlen(token) + 1);
+    if (token != NULL & strcmp(temp, info.addr) != 0) {
+        printf("address p: %s\n", token);
+        strcpy(info.addr, token);
+        if (token != NULL) {
+            /*token = strtok(NULL, ":");*/
+            if (token != NULL) {
+                token = token + strlen(token) + 1;
+                printf("port: %s\n", token);
+                info.port = malloc(strlen(token) + 1);
 
-        strcpy(info.port, token);
+                strcpy(info.port, token);
+            } else {
+                info.valid = false;
+                free(temp);
+                return info;
+            }
+        }
     } else {
-        info.valid = false;
-        return info;
+        token = strtok(temp, "/");
+        if (token != NULL) {
+            printf("address: %s\n", token);
+            strcpy(info.addr, token);
+        } else {
+            info.valid = false;
+            free(temp);
+            return info;
+        }
     }
+    free(temp);
 
     free(temp_url);
 
@@ -63,6 +82,10 @@ UrlInfo parse_url(const char* url) {
 }
 
 void destroy_url(UrlInfo* info) {
-    free(info->file_path);
-    free(info->port);
+    if (info->file_path) {
+        free(info->file_path);
+    }
+    if (info->port) {
+        free(info->port);
+    }
 }

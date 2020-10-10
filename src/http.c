@@ -255,7 +255,9 @@ int create_response(Response* response, char** msg) {
 }
 
 void destroy_request(Request* request) {
-    free(request->request_uri);
+    if (request->request_uri) {
+        free(request->request_uri);
+    }
 }
 
 void destroy_response(Response* response) {

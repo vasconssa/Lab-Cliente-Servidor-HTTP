@@ -68,7 +68,8 @@ bool read_response(int fd, Response* response) {
             num_bytes = line_temp_buffer_size;
             if (num_bytes == -1) {
                 perror("recv");
-                return -1;
+                shutdown(fd, 2);
+                pthread_exit(NULL);
             }
         }
     }
@@ -79,6 +80,7 @@ bool read_response(int fd, Response* response) {
         complete_line = false;
         while (!complete_line) {
             complete_line = read_line(line_temp_buffer, &num_bytes, &line);
+            printf("line: %s", line);
             printf("num_bytes: %d\n", num_bytes);
             if (num_bytes == 2) {
                 resp_header_finished = true;
@@ -107,7 +109,8 @@ bool read_response(int fd, Response* response) {
                     num_bytes = line_temp_buffer_size;
                     if (num_bytes == -1) {
                         perror("recv");
-                        return -1;
+                        shutdown(fd, 2);
+                        pthread_exit(NULL);
                     }
                 }
             }
@@ -129,7 +132,8 @@ bool read_response(int fd, Response* response) {
         num_bytes = recv(fd, temp_buffer, 2048, 0);
         if (num_bytes == -1) {
             perror("recv");
-            return -1;
+            shutdown(fd, 2);
+            pthread_exit(NULL);
         }
         memcpy(response->data + length, temp_buffer, num_bytes);
         length += num_bytes;
@@ -173,9 +177,15 @@ void* communicate(void* td) {
            }
            path_len--;
         }
+
+        char* file_path = path + path_len + 2;
+        printf("path fopen: %s\n", file_path);
+        if (*(path + path_len + 2) == '\0') {
+           file_path = "index.html"; 
+        }
         
-        FILE* file = fopen(path + path_len + 2, "wb");
-        printf("path: %s\n", path + path_len + 2);
+        FILE* file = fopen(file_path, "wb");
+        printf("path fopen: %s\n", file_path);
         fwrite(response.data, sizeof(char), response.content_length, file);
         fclose(file);
     }
@@ -207,7 +217,16 @@ int main(int argc, char* argv[]) {
     for (int n = 0; n < num_paths; n++) {
         struct addrinfo *servinfo;
         UrlInfo url_info = parse_url(argv[n + 1]);
-        int rv = getaddrinfo(url_info.addr, url_info.port, &hints, &servinfo);
+        if (!url_info.valid) {
+            printf("not valid\n");
+            destroy_url(&url_info);
+            continue;
+        }
+        char* port = url_info.port;
+        if (port == NULL) {
+            port = "80";
+        }
+        int rv = getaddrinfo(url_info.addr, port, &hints, &servinfo);
         td[n].path = malloc(strlen(url_info.file_path) + 1);
         strcpy(td[n].path, url_info.file_path);
         destroy_url(&url_info);
