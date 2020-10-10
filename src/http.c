@@ -227,7 +227,7 @@ int sendall(int fd, char* buf, int* len) {
     while(total < *len) {
         n = send(fd, buf + total, bytesleft, 0);
         printf("send %d\n", n);
-        if (n == 1) {
+        if (n == -1) {
             break;
         }
         total += n;
