@@ -43,7 +43,8 @@ bool read_request(int fd, Request* request) {
     int num_bytes = total_received;
     if (num_bytes == -1) {
         perror("recv");
-        return -1;
+        shutdown(fd, 2);
+        pthread_exit(NULL);
     }
 
     bool complete_line = false;
@@ -259,7 +260,6 @@ int main(int argc, char* argv[]) {
             perror("accept");
             continue;
         }
-        count++;
         inet_ntop(their_addr.ss_family,
                   get_in_addr((struct sockaddr*)&their_addr),
                   s, sizeof(s));
@@ -267,7 +267,7 @@ int main(int argc, char* argv[]) {
 
         pthread_t tid;
 
-        if (count == 10) {
+        if (count > 9) {
             count = 0;
             num_slot++;
             slot = realloc(slot, (num_slot + 1) * sizeof(struct thread_data*));
@@ -276,6 +276,7 @@ int main(int argc, char* argv[]) {
 
         slot[num_slot][count].fd = new_fd;
         slot[num_slot][count].id = count;
+        printf("count: %d\n", count);
         int rc = pthread_create(&tid, NULL, communicate, (void *)&slot[num_slot][count]);
         pthread_join(tid, NULL);
         count++;
