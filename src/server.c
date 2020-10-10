@@ -41,7 +41,7 @@ bool read_request(int fd, Request* request) {
 
     int total_received = recv(fd, temp_buffer, 2048, 0);
     int num_bytes = total_received;
-    if (num_bytes == -1) {
+    if (num_bytes == -1 || total_received == 0) {
         perror("recv");
         shutdown(fd, 2);
         pthread_exit(NULL);
@@ -74,7 +74,7 @@ bool read_request(int fd, Request* request) {
             memcpy(line_temp_buffer + line_temp_buffer_size, temp_buffer, total_received);
             line_temp_buffer_size += total_received;
             num_bytes = line_temp_buffer_size;
-            if (num_bytes == -1) {
+            if (num_bytes == -1 || total_received == 0) {
                 perror("recv");
                 return -1;
             }
@@ -107,7 +107,7 @@ bool read_request(int fd, Request* request) {
                     memcpy(line_temp_buffer + line_temp_buffer_size, temp_buffer, total_received);
                     line_temp_buffer_size += total_received;
                     num_bytes = line_temp_buffer_size;
-                    if (num_bytes == -1) {
+                    if (num_bytes == -1 || total_received == 0) {
                         perror("recv");
                         return -1;
                     }

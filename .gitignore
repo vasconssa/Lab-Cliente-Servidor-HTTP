@@ -1,4 +1,4 @@
 .*
 !/.gitignore
-build/
+build/bin/
 .clangd/

@@ -1,0 +1,25 @@
+[
+          {
+            "directory": "/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build",
+            "file": "/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/src/http.c",
+            "command": "cc -MMD -MP -I/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/include -I/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/3rdparty -fomit-frame-pointer -g -o /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build/obj/Android-Arm/Debug/common/http.o -MF /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build/obj/Android-Arm/Debug/common/http.d -c /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/src/http.c"
+          }
+,
+          {
+            "directory": "/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build",
+            "file": "/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/src/url.c",
+            "command": "cc -MMD -MP -I/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/include -I/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/3rdparty -fomit-frame-pointer -g -o /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build/obj/Android-Arm/Debug/common/url.o -MF /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build/obj/Android-Arm/Debug/common/url.d -c /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/src/url.c"
+          }
+,
+          {
+            "directory": "/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build",
+            "file": "/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/src/server.c",
+            "command": "cc -MMD -MP -I/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/include -I/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/3rdparty -fomit-frame-pointer -g -o /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build/obj/Android-Arm/Debug/server/server.o -MF /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build/obj/Android-Arm/Debug/server/server.d -c /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/src/server.c"
+          }
+,
+          {
+            "directory": "/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build",
+            "file": "/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/src/client.c",
+            "command": "cc -MMD -MP -I/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/include -I/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/3rdparty -fomit-frame-pointer -g -o /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build/obj/Android-Arm/Debug/client/client.o -MF /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build/obj/Android-Arm/Debug/client/client.d -c /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/src/client.c"
+          }
+]

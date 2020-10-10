@@ -14,6 +14,26 @@ workspace "Gabibits"
 
 include("toolchain.lua")
 
+--newoption {
+    --trigger = "prefix",
+    --value = "bin",
+    --description = "Install directory",
+--}
+
+--newaction {
+    --trigger = "install",
+    --description = "Install software in desired prefix, default is bin",
+    --execute = function()
+        --path = "bin/"
+        --if _OPTIONS["prefix"] then
+            --path = _OPTIONS["prefix"]
+        --end
+        --os.mkdir(path)
+        --os.copy('%{cfg.buildtarget.directory}/client', path)
+        --os.copy('%{cfg.buildtarget.directory}/server', path)
+    --end
+--}
+
 project "common"
     kind "StaticLib"
     language "C"
