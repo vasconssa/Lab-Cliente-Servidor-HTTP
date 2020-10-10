@@ -138,22 +138,30 @@ void* communicate(void* fd) {
     printf("METHOD: %u, URI: %s, VERSION: %u.%u\n", request.method, request.request_uri, 
                                                     version_major(request.version), version_minor(request.version));
     printf("URI size: %lu\n", strlen(request.request_uri));
+    if(strcmp(request.request_uri, "/") == 0) {
+        request.request_uri = realloc(request.request_uri, strlen("index.html") + 1);
+        strcpy(request.request_uri,  "/index.html");
+    }
 
     char* file_path = malloc(strlen(main_dir) + strlen(request.request_uri) + 2);
     strcpy(file_path, main_dir);
     strcat(file_path, request.request_uri);
 
     FILE* file = fopen(file_path, "rb");
-    /*printf("file: %s\n", file_path);*/
+    printf("file: %s\n", file_path);
     int size = 0;
     char* file_buf = NULL;
     if (file != NULL) {
         fseek(file, 0, SEEK_END);
         size = ftell(file);
-        file_buf = malloc(size);
-        printf("size file: %d\n", size);
-        rewind(file);
-        fread(file_buf, sizeof(char), size, file);
+        if (size > 0) {
+            file_buf = malloc(size);
+            printf("size file: %d\n", size);
+            rewind(file);
+            fread(file_buf, sizeof(char), size, file);
+        } else {
+            size = 0;
+        }
         fclose(file);
     }
     char* resp_msg = NULL;
