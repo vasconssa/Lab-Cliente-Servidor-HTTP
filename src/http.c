@@ -97,7 +97,7 @@ bool parse_resp_statusline(const char* msg, Response* response) {
     char* line = strtok(message, "\r\n");
 
     // Parse Status Line : HTTP-Version SP Status-Code SP Reason-Phrase CRLF
-    char* temp_msg = malloc(strlen(line));
+    char* temp_msg = malloc(strlen(line) + 1);
     strcpy(temp_msg, line);
     // HTTP-Version
     char* token = strtok(temp_msg, " ");
@@ -110,6 +110,7 @@ bool parse_resp_statusline(const char* msg, Response* response) {
     token = strtok(NULL, " ");
     response->status = get_status_code(token);
     free(temp_msg);
+    free(message);
 
     return valid;
 }
@@ -189,7 +190,7 @@ int create_request(Request* request, char** msg) {
     int size = 0;
     if (request->method == GET) {
         method = "GET";
-        size = strlen(method) + 1;
+        size = strlen(method);
     } else {
         return 0;
     }
@@ -204,14 +205,14 @@ int create_request(Request* request, char** msg) {
     } else {
         return 0;
     }
-    size += strlen(version) + 1;
+    size += strlen(version);
     if (request->request_uri != NULL) {
-        size += strlen(version) + 1;
+        size += strlen(request->request_uri);
     } else {
         return 0;
     }
 
-    size += 11;
+    size += 7;
     *msg = malloc(size);
     sprintf(*msg, "%s %s %s\r\n\r\n", method, request->request_uri, version);
 
@@ -251,4 +252,11 @@ int create_response(Response* response, char** msg) {
 
 
    return size;
+}
+
+void destroy_request(Request* request) {
+    free(request->request_uri);
+}
+
+void destroy_response(Response* response) {
 }

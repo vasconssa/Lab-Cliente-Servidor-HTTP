@@ -64,4 +64,5 @@ UrlInfo parse_url(const char* url) {
 
 void destroy_url(UrlInfo* info) {
     free(info->file_path);
+    free(info->port);
 }

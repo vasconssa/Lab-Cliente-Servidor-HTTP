@@ -49,3 +49,7 @@ bool parse_response(const char* msg, Response* response);
 int create_request(Request* request, char** msg);
 
 int create_response(Response* response, char** msg);
+
+void destroy_request(Request* request);
+
+void destroy_response(Response* response);

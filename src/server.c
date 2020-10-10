@@ -85,46 +85,34 @@ bool read_request(int fd, Request* request) {
     /*printf("buf: %s\n", line_temp_buffer);*/
     while (!req_finished) {
         printf("num_bytes aki: %d\n", num_bytes);
-        read_line(line_temp_buffer, &num_bytes, &line);
-        if (num_bytes == 2) {
-            req_finished = true;
-        }
+        complete_line = false;
+        while (!complete_line) {
+            complete_line = read_line(line_temp_buffer, &num_bytes, &line);
+            if (num_bytes == 2) {
+                req_finished = true;
+            }
 
-        if (!req_finished) {
-            if (num_bytes > 0 && num_bytes < line_temp_buffer_size) {
-                /*memmove(temp_buffer, temp_buffer + num_bytes, 2048 - num_bytes);*/
-                memmove(line_temp_buffer, line_temp_buffer + num_bytes, line_temp_buffer_size - num_bytes);
-                /*memset(temp_buffer + (2048 - num_bytes), 'a', num_bytes);*/
-                int n = num_bytes;
-                num_bytes = line_temp_buffer_size - num_bytes;
-                line_temp_buffer_size -= n;
-            } else {
-                total_received = recv(fd, temp_buffer, 2048, 0);
-                line_temp_buffer = realloc(line_temp_buffer, line_temp_buffer_size + total_received);
-                memcpy(line_temp_buffer + line_temp_buffer_size, temp_buffer, total_received);
-                line_temp_buffer_size += total_received;
-                num_bytes = line_temp_buffer_size;
-                if (num_bytes == -1) {
-                    perror("recv");
-                    return -1;
+            if (!req_finished) {
+                if (num_bytes > 0 && num_bytes < line_temp_buffer_size) {
+                    /*memmove(temp_buffer, temp_buffer + num_bytes, 2048 - num_bytes);*/
+                    memmove(line_temp_buffer, line_temp_buffer + num_bytes, line_temp_buffer_size - num_bytes);
+                    /*memset(temp_buffer + (2048 - num_bytes), 'a', num_bytes);*/
+                    int n = num_bytes;
+                    num_bytes = line_temp_buffer_size - num_bytes;
+                    line_temp_buffer_size -= n;
+                } else {
+                    total_received = recv(fd, temp_buffer, 2048, 0);
+                    line_temp_buffer = realloc(line_temp_buffer, line_temp_buffer_size + total_received);
+                    memcpy(line_temp_buffer + line_temp_buffer_size, temp_buffer, total_received);
+                    line_temp_buffer_size += total_received;
+                    num_bytes = line_temp_buffer_size;
+                    if (num_bytes == -1) {
+                        perror("recv");
+                        return -1;
+                    }
                 }
             }
-            /*if (num_bytes > 0) {*/
-                /*memmove(temp_buffer, temp_buffer + num_bytes, 2048 - num_bytes);*/
-                /*[>memset(temp_buffer + (total_received - num_bytes), 'a', num_bytes);<]*/
-                /*int n = num_bytes;*/
-                /*num_bytes = total_received - num_bytes;*/
-                /*total_received -= n;*/
-            /*} else {*/
-                /*total_received = recv(fd, temp_buffer, 2048, 0);*/
-                /*num_bytes = total_received;*/
-                /*if (num_bytes == -1) {*/
-                    /*perror("recv");*/
-                    /*return -1;*/
-                /*}*/
-            /*}*/
         }
-        /*printf("buf: %s\n", temp_buffer);*/
         free(line);
     }
     free(line_temp_buffer);
@@ -168,25 +156,29 @@ void* communicate(void* fd) {
         fread(file_buf, sizeof(char), size, file);
         fclose(file);
     }
-    char* resp = NULL;
+    char* resp_msg = NULL;
     Response response;
     response.version = request.version;
     response.status = OK;
     response.content_length = size;
     response.data = file_buf;
-    size = create_response(&response, &resp);
+    size = create_response(&response, &resp_msg);
     if (file_buf != NULL) {
         free(file_buf);
     }
     /*resp[size - 1] = '\0';*/
     /*resp[size] = '\0';*/
     printf("size: %d\n", size);
-    printf("%s\n", resp);
+    /*printf("%s\n", resp);*/
 
-    rv = sendall(new_fd, resp, &size);
+    rv = sendall(new_fd, resp_msg, &size);
     if (rv == -1) {
         perror("send");
     }
+    destroy_request(&request);
+    destroy_response(&response);
+    free(resp_msg);
+    free(file_path);
 
     shutdown(new_fd, 2);
     pthread_exit(NULL);
@@ -249,6 +241,9 @@ int main(int argc, char* argv[]) {
     socklen_t sin_size;
     char s[INET6_ADDRSTRLEN];
     int count = 0;
+    int num_slot = 0;
+    struct thread_data** slot = malloc(1 * sizeof(struct thread_data*));
+    slot[num_slot] = malloc(10 * sizeof(struct thread_data));
     while (1) {
         sin_size = sizeof(their_addr);
         int new_fd = accept(sockfd, (struct sockaddr*)&their_addr, &sin_size);
@@ -264,10 +259,25 @@ int main(int argc, char* argv[]) {
 
         pthread_t tid;
 
-        struct thread_data data = {count, new_fd};
-        int rc = pthread_create(&tid, NULL, communicate, (void *)&data);
+        if (count == 10) {
+            count = 0;
+            num_slot++;
+            slot = realloc(slot, (num_slot + 1) * sizeof(struct thread_data*));
+            slot[num_slot] = malloc(10 * sizeof(struct thread_data));
+        }
+
+        slot[num_slot][count].fd = new_fd;
+        slot[num_slot][count].id = count;
+        int rc = pthread_create(&tid, NULL, communicate, (void *)&slot[num_slot][count]);
+        pthread_join(tid, NULL);
+        count++;
         
     }
+
+    for (int i = 0; i < num_slot + 1; i++) {
+        free(slot[i]);
+    }
+    free(slot);
 
     return 0;
 }
