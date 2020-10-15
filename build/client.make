@@ -35,8 +35,6 @@ ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
 LINKCMD = $(CC) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
 define PRELINKCMDS
 endef
-define POSTBUILDCMDS
-endef
 
 ifeq ($(config),debug_android-arm)
 TARGETDIR = bin/Android-Arm/Debug
@@ -50,6 +48,10 @@ ALL_LDFLAGS += $(LDFLAGS)
 define PREBUILDCMDS
 	@echo Running prebuild commands
 	mkdir -p bin/Android-Arm/Debug/www
+endef
+define POSTBUILDCMDS
+	@echo Running postbuild commands
+	ln -s build/bin/Android-Arm/Debug/client ../client
 endef
 
 else ifeq ($(config),debug_win32)
@@ -65,6 +67,10 @@ define PREBUILDCMDS
 	@echo Running prebuild commands
 	mkdir -p bin/Win32/Debug/www
 endef
+define POSTBUILDCMDS
+	@echo Running postbuild commands
+	ln -s build/bin/Win32/Debug/client ../client
+endef
 
 else ifeq ($(config),debug_win64)
 TARGETDIR = bin/Win64/Debug
@@ -78,6 +84,10 @@ ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
 define PREBUILDCMDS
 	@echo Running prebuild commands
 	mkdir -p bin/Win64/Debug/www
+endef
+define POSTBUILDCMDS
+	@echo Running postbuild commands
+	ln -s build/bin/Win64/Debug/client ../client
 endef
 
 else ifeq ($(config),debug_linux32)
@@ -93,6 +103,10 @@ define PREBUILDCMDS
 	@echo Running prebuild commands
 	mkdir -p bin/Linux32/Debug/www
 endef
+define POSTBUILDCMDS
+	@echo Running postbuild commands
+	ln -s build/bin/Linux32/Debug/client ../client
+endef
 
 else ifeq ($(config),debug_linux64)
 TARGETDIR = bin/Linux64/Debug
@@ -106,6 +120,10 @@ ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -rdynamic
 define PREBUILDCMDS
 	@echo Running prebuild commands
 	mkdir -p bin/Linux64/Debug/www
+endef
+define POSTBUILDCMDS
+	@echo Running postbuild commands
+	ln -s build/bin/Linux64/Debug/client ../client
 endef
 
 else ifeq ($(config),release_android-arm)
@@ -121,6 +139,10 @@ define PREBUILDCMDS
 	@echo Running prebuild commands
 	mkdir -p bin/Android-Arm/Release/www
 endef
+define POSTBUILDCMDS
+	@echo Running postbuild commands
+	ln -s build/bin/Android-Arm/Release/client ../client
+endef
 
 else ifeq ($(config),release_win32)
 TARGETDIR = bin/Win32/Release
@@ -134,6 +156,10 @@ ALL_LDFLAGS += $(LDFLAGS)
 define PREBUILDCMDS
 	@echo Running prebuild commands
 	mkdir -p bin/Win32/Release/www
+endef
+define POSTBUILDCMDS
+	@echo Running postbuild commands
+	ln -s build/bin/Win32/Release/client ../client
 endef
 
 else ifeq ($(config),release_win64)
@@ -149,6 +175,10 @@ define PREBUILDCMDS
 	@echo Running prebuild commands
 	mkdir -p bin/Win64/Release/www
 endef
+define POSTBUILDCMDS
+	@echo Running postbuild commands
+	ln -s build/bin/Win64/Release/client ../client
+endef
 
 else ifeq ($(config),release_linux32)
 TARGETDIR = bin/Linux32/Release
@@ -163,6 +193,10 @@ define PREBUILDCMDS
 	@echo Running prebuild commands
 	mkdir -p bin/Linux32/Release/www
 endef
+define POSTBUILDCMDS
+	@echo Running postbuild commands
+	ln -s build/bin/Linux32/Release/client ../client
+endef
 
 else ifeq ($(config),release_linux64)
 TARGETDIR = bin/Linux64/Release
@@ -176,6 +210,10 @@ ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -rdynamic
 define PREBUILDCMDS
 	@echo Running prebuild commands
 	mkdir -p bin/Linux64/Release/www
+endef
+define POSTBUILDCMDS
+	@echo Running postbuild commands
+	ln -s build/bin/Linux64/Release/client ../client
 endef
 
 endif

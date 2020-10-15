@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from owasp.org/chapters/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 05:04:05 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head><title>OWASP Foundation Local Chapters | OWASP Foundation</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="OWASP Local Chapters on the main website for The OWASP Foundation. OWASP is a nonprofit foundation that works to improve the security of software.">
+<meta property="og:description" content="OWASP Local Chapters on the main website for The OWASP Foundation. OWASP is a nonprofit foundation that works to improve the security of software.">
+<meta propery="og:title" content="OWASP Local Chapters | OWASP Foundation">
+<meta property="og:url" content="index.html">
+<meta property="og:locale" content="en_US">
+
+<meta property="og:type" content="website" />
+<meta property="og:image" content="../www--site-theme/favicon.ico" />
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-XSS-Protection" content="1; mode=block">
+<script src="../cdn-cgi/apps/head/QYMcuzl7EEkHj4wXQRswO8EpDEg.js"></script><link rel="canonical" href="index.html" />
+
+
+
+
+<script src="../www--site-theme/assets/js/js.cookie.js"></script>
+<script>
+  if(Cookies.get('cookies-ok') == 'true' && window.ga === undefined)
+  {
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    ga('create', 'UA-4531126-1', 'auto');
+    ga('send', 'pageview');
+  }
+  else if (Cookies.get('cookies-ok') == 'true')
+  {
+    ga('send', 'pageview');
+  }
+
+  function handleOutboundLinkClicks(event) {
+    var href = '';
+    if(event.target.href == undefined)
+      href = event.target.parentElement.href;
+    else
+      href = event.target.href
+  if(Cookies.get('cookies-ok') == 'true'){  
+    
+    ga('send', 'event', {
+      eventCategory: 'Outbound Link',
+      eventAction: 'click',
+      eventLabel: href,
+      transport: 'beacon'
+    });
+  }
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+<link rel="stylesheet" href="../www--site-theme/assets/css/styles.css">
+<link rel="shortcut icon" type="images/x-icon" href="../www--site-theme/favicon.ico">
+<script src="../www--site-theme/assets/js/jquery-3.4.1.min.js"></script>
+<script src="../www--site-theme/assets/js/util.js"></script>
+<script src="../www--site-theme/assets/js/yaml.min.js"></script>
+<script src="../www--site-theme/assets/js/luxon.min.js"></script>
+
+<script type="text/javascript">
+      $(function(){
+        var baseurl = "https://github.com/OWASP/owasp.github.io/blob/master/";
+        var path = "pages/chapters/chapters.md";
+        $('.repo').html('<a href=' + baseurl + path + '><div class="reset-3c756112--menuItemIcon-206eb252" style="float: left;"><svg preserveAspectRatio="xMidYMid meet" height="1em" width="1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 438.549 438.549" stroke="none" class="icon-7f6730be--text-3f89f380"><g><path d="M409.132 114.573c-19.608-33.596-46.205-60.194-79.798-79.8-33.598-19.607-70.277-29.408-110.063-29.408-39.781 0-76.472 9.804-110.063 29.408-33.596 19.605-60.192 46.204-79.8 79.8C9.803 148.168 0 184.854 0 224.63c0 47.78 13.94 90.745 41.827 128.906 27.884 38.164 63.906 64.572 108.063 79.227 5.14.954 8.945.283 11.419-1.996 2.475-2.282 3.711-5.14 3.711-8.562 0-.571-.049-5.708-.144-15.417a2549.81 2549.81 0 0 1-.144-25.406l-6.567 1.136c-4.187.767-9.469 1.092-15.846 1-6.374-.089-12.991-.757-19.842-1.999-6.854-1.231-13.229-4.086-19.13-8.559-5.898-4.473-10.085-10.328-12.56-17.556l-2.855-6.57c-1.903-4.374-4.899-9.233-8.992-14.559-4.093-5.331-8.232-8.945-12.419-10.848l-1.999-1.431c-1.332-.951-2.568-2.098-3.711-3.429-1.142-1.331-1.997-2.663-2.568-3.997-.572-1.335-.098-2.43 1.427-3.289 1.525-.859 4.281-1.276 8.28-1.276l5.708.853c3.807.763 8.516 3.042 14.133 6.851 5.614 3.806 10.229 8.754 13.846 14.842 4.38 7.806 9.657 13.754 15.846 17.847 6.184 4.093 12.419 6.136 18.699 6.136 6.28 0 11.704-.476 16.274-1.423 4.565-.952 8.848-2.383 12.847-4.285 1.713-12.758 6.377-22.559 13.988-29.41-10.848-1.14-20.601-2.857-29.264-5.14-8.658-2.286-17.605-5.996-26.835-11.14-9.235-5.137-16.896-11.516-22.985-19.126-6.09-7.614-11.088-17.61-14.987-29.979-3.901-12.374-5.852-26.648-5.852-42.826 0-23.035 7.52-42.637 22.557-58.817-7.044-17.318-6.379-36.732 1.997-58.24 5.52-1.715 13.706-.428 24.554 3.853 10.85 4.283 18.794 7.952 23.84 10.994 5.046 3.041 9.089 5.618 12.135 7.708 17.705-4.947 35.976-7.421 54.818-7.421s37.117 2.474 54.823 7.421l10.849-6.849c7.419-4.57 16.18-8.758 26.262-12.565 10.088-3.805 17.802-4.853 23.134-3.138 8.562 21.509 9.325 40.922 2.279 58.24 15.036 16.18 22.559 35.787 22.559 58.817 0 16.178-1.958 30.497-5.853 42.966-3.9 12.471-8.941 22.457-15.125 29.979-6.191 7.521-13.901 13.85-23.131 18.986-9.232 5.14-18.182 8.85-26.84 11.136-8.662 2.286-18.415 4.004-29.263 5.146 9.894 8.562 14.842 22.077 14.842 40.539v60.237c0 3.422 1.19 6.279 3.572 8.562 2.379 2.279 6.136 2.95 11.276 1.995 44.163-14.653 80.185-41.062 108.068-79.226 27.88-38.161 41.825-81.126 41.825-128.906-.01-39.771-9.818-76.454-29.414-110.049z"></path></g></svg><span style="padding-left:8px;">Edit on GitHub</span></div></a>');
+      });
+    </script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+</head>
+<body class="base-grid col-sidebar">
+<div id="blocker"></div>
+<noscript>For full functionality of this site it is necessary to enable JavaScript. Here are the <a href="https://www.enable-javascript.com/"> instructions how to enable JavaScript in your web browser</a>.</noscript>
+<header role="banner">
+<div id="banner" class="notice" aria-label="announcement">
+
+<p><a href="https://events.bizzabo.com/OWASPGlobalAppSec" target="_blank">Register now</a> for Global AppSec 2020. Great keynotes, training, over 60 education sessions, and more.</p>
+<a href="#" id="close-banner" aria-label="close announcement">
+<i class="fa fa-times"></i>
+</a>
+</div>
+<style>
+  #banner img {
+    max-width: 30em;
+  }
+
+  @media (max-width: 1131px) {
+    #banner img{
+      max-width: 30em;
+    }
+	}
+
+@media (max-width: 800px) {
+	#banner img{
+      max-width: 20em;
+    }
+}
+
+@media (max-width: 600px) {
+	#banner img{
+      max-width: 20em;
+    }
+}
+
+@media (max-width: 450px) {
+	#banner img{
+      max-width: 250px;
+  }
+}
+</style>
+<div class="header-wrapper" aria-label="main navigation">
+<nav class="alt-nav">
+<a href="#" class="menu-toggler" aria-hidden="true">
+<i class="fa fa-bars"></i>
+</a>
+<a href="../index.html" class="alt-logo" aria-label="go to homepage">
+<img src="../assets/images/logo.png" alt="OWASP logo">
+</a>
+<div id="overlay" class="remove-el">
+</div>
+
+</nav>
+<nav class="top-nav" role="navigation" aria-label="primary navigation">
+<a href="../index.html" class="desktop-logo" aria-label="go to homepage">
+<img src="../assets/images/logo.png" alt="">
+</a>
+
+<div class="interactive-wrapper">
+<form role="search" method="get" action="https://owasp.org/search">
+<div class='search-div'>
+<input id="searchString" name="searchString" class="search-bar" type="search" placeholder="Search OWASP.org" required="true">
+<button id="search-button" type="submit" class="fa fa-search">
+
+</button>
+</div>
+</form>
+<div class="nav-button" aria-label="donate to or join OWASP">
+<a href="https://owasp.org/donate?reponame=owasp.github.io" class="cta-button green">Donate</a>
+<a href="https://owasp.org/membership" class="cta-button">Join</a>
+</div>
+</div>
+</nav>
+<div id='disclaimer-container'>
+<div id="disclaimer">
+<p>This website uses cookies to analyze our traffic and only share that information with our analytics partners.</p><a class="disclaimerOK">Accept</a>
+</div>
+<div id="close-disclaimer">x</div>
+</div>
+</div>
+<script type="text/javascript">
+  $(function(){
+      
+      url = $(location).attr('href');
+      if(url.includes('www2'))
+      {
+        url = url.replace(/www2./, '');
+        $(location).attr('href',url);
+        return;
+      }
+    // this works to get data from a json file NOT in data
+      $.getJSON("../www--site-theme/assets/sitedata/menus.json", function(data) {
+         var listr = "<ul aria-label='header menu'>";
+         
+         var mlistr = "<ul class='mobile-menu hide-el' role='navigation' aria-label='mobile primary navigation'>";
+
+          mlistr += "<li><a href='#' class='menu-toggler' aria-hidden='true'><i class='fa fa-times'></i></a></li>";
+          mlistr += "<li>";
+          mlistr += "<form role='search' method='get' action='/search'>";   
+          mlistr += "<div class='search-div'>";
+          mlistr += "<input id='searchString' aria-label='search input' name='searchString' class='search-bar' type='search' placeholder='Search OWASP.org' required='true'>";
+          mlistr += "<button id='search-button' aria-label='search button' type='submit' class='fa fa-search' style='padding-left: 8px;'></button></div></form>";
+          mlistr += "</li>";
+          $.each(data.menus, function (ndx, menu){
+              listr += "<li><a href='" + menu.url + "'>" + menu.title + "</a>";
+
+              if(!menu.items)
+              {
+                  mlistr += "<li><a href='" + menu.url + "'>" + menu.title + "</a>";
+              }
+              
+              if(menu.items){
+                  listr += "<ul class='dropdown-menu'>";
+                  mlistr += "<button class='accordion'>" + menu.title + "</button>";
+                  mlistr += "<div class='panel'>";
+                  mlistr += "<ul>";
+                $.each(menu.items, function(ndx, item){
+                
+                  if(item.separator)
+                  {
+                      listr += "<li class='separator'>";
+                      mlistr += "<li class='separator'>";
+                  }
+                  else
+                  {
+                      listr += "<li>";
+                      mlistr += "<li>";
+                  }
+                  listr += "<a href='" + item.url + "'";
+                  mlistr += "<a href='" + item.url + "'";
+                  if(item.opentab)
+                  {
+                    listr += " target='_blank' rel='noopener noreferrer'";
+                    mlistr += " target='_blank' rel='noopener noreferrer'";
+                  }
+
+                  listr += ">" + item.title + "</a></li>";
+                  mlistr += ">" + item.title + "</a></li>";
+                });
+                listr += "</ul>";
+                mlistr += "</ul>";
+                mlistr += "</div>"
+              }
+              
+              listr += "</li>";
+              mlistr += "</li>";
+          });
+          listr += "</ul>";
+          mlistr += "<li><a href='/donate'>MAKE A DONATION</a></li>";
+          mlistr += "<li><a href='/membership'>BECOME A MEMBER</a></li>";
+          mlistr += "<li><a href='/sitemap'>SITEMAP</a></li>";
+          mlistr += "</ul>";
+          
+          $('.desktop-logo').after(listr);
+          $('#overlay').after(mlistr);
+
+          $(".accordion").click(function () {
+              $(this).toggleClass("active");
+              if($(this).next('.panel').css('display') == 'block'){
+                $(this).next('.panel').css('display', 'none');
+              }
+              else {
+                $(this).next('.panel').css('display', 'block');
+              }
+            });
+            $(".menu-toggler").click(function() {
+              $(".mobile-menu").toggleClass('hide-el');
+            });
+      });
+    });
+  </script>
+</header>
+<main role="main">
+<div class="main-wrapper">
+<h1 class="page-title">OWASP Local Chapters</h1>
+<div id="main" class="page-body tab" role="tabpanel" aria-labelledby="main-link" tabindex="0">
+<section id='sec-main' class='page-body'>
+
+<p><img src="https://owasp.org/assets/images/web/chaper-wide.jpg" alt="Bay Area Chapter Meeting" /></p>
+<p>OWASP Local Chapters build community for application security professionals around the world. Our Local Chapter Meetings are <strong>free and open</strong> to anyone to attend so both members and non-members are always welcomed. Local meetings include:</p>
+<ul>
+<li>Training to improve your skills</li>
+<li>Talks relevant to your work</li>
+<li>Networking opportunities</li>
+</ul>
+<p>Chapter pages on this site have general information and leader contact info. Local meeting RSVPs are handled through <a href="https://meetup.com/pro/owasp">https://meetup.com/pro/owasp</a>.</p>
+<h2 id="local-chapters-by-region">Local Chapters by Region</h2>
+<ul>
+<li><a href="#Africa">Africa</a></li>
+<li><a href="#Asia">Asia</a></li>
+<li><a href="#Europe">Europe</a></li>
+<li><a href="#NorthAmerica">North America</a></li>
+<li><a href="#Oceania">Oceania</a></li>
+<li><a href="#SouthAmerica">South America</a></li>
+</ul>
+<p><a href="https://meetup.com/pro/owasp" target="_blank" rel="noopener"><button class="cta-button grey">Search using Map</button></a></p>
+<h2 id="chapter-listing">Chapter Listing</h2>
+<div class="chapters-list">
+<div class="region">
+<h4><a name="Africa"></a>Africa</h4>
+<ul>
+
+
+<li><a href="https://owasp.org/www-chapter-abidjan/">OWASP Abidjan</a></li>
+<li><a href="https://owasp.org/www-chapter-cairo/">OWASP Cairo</a></li>
+<li><a href="https://owasp.org/www-chapter-cape-town/">OWASP Cape Town</a></li>
+<li><a href="https://owasp.org/www-chapter-ghana/">OWASP Ghana</a></li>
+<li><a href="https://owasp.org/www-chapter-johannesburg/">OWASP Johannesburg</a></li>
+<li><a href="https://owasp.org/www-chapter-mombasa/">OWASP Mombasa</a></li>
+<li><a href="https://owasp.org/www-chapter-morocco/">OWASP Morocco</a></li>
+<li><a href="https://owasp.org/www-chapter-tunisia/">OWASP Tunisia</a></li>
+</ul>
+</div>
+<div class="region">
+<h4><a name="Asia"></a>Asia</h4>
+<ul>
+
+
+<li><a href="https://owasp.org/www-chapter-ahmedabad/">OWASP Ahmedabad</a></li>
+<li><a href="https://owasp.org/www-chapter-aligarh/">OWASP Aligarh</a></li>
+<li><a href="https://owasp.org/www-chapter-bangalore/">OWASP Bangalore</a></li>
+<li><a href="https://owasp.org/www-chapter-belagavi/">OWASP Belagavi</a></li>
+<li><a href="https://owasp.org/www-chapter-bhopal/">OWASP Bhopal</a></li>
+<li><a href="https://owasp.org/www-chapter-chandigarh/">OWASP Chandigarh</a></li>
+<li><a href="https://owasp.org/www-chapter-chennai/">OWASP Chennai</a></li>
+<li><a href="https://owasp.org/www-chapter-china-mainland/">OWASP China-Mainland</a></li>
+<li><a href="https://owasp.org/www-chapter-coimbatore/">OWASP Coimbatore</a></li>
+<li><a href="https://owasp.org/www-chapter-colombo/">OWASP Colombo</a></li>
+<li><a href="https://owasp.org/www-chapter-cuddalore/">OWASP Cuddalore</a></li>
+<li><a href="https://owasp.org/www-chapter-delhi/">OWASP Delhi</a></li>
+<li><a href="https://owasp.org/www-chapter-dhaka/">OWASP Dhaka</a></li>
+<li><a href="https://owasp.org/www-chapter-dindigul/">OWASP Dindigul</a></li>
+<li><a href="https://owasp.org/www-chapter-doha/">OWASP Doha</a></li>
+<li><a href="https://owasp.org/www-chapter-dubai/">OWASP Dubai</a></li>
+<li><a href="https://owasp.org/www-chapter-gwalior/">OWASP Gwalior</a></li>
+<li><a href="https://owasp.org/www-chapter-hyderabad/">OWASP Hyderabad</a></li>
+<li><a href="https://owasp.org/www-chapter-iiit-sricity/">OWASP IIIT Sri City Student Chapter</a></li>
+<li><a href="https://owasp.org/www-chapter-indore/">OWASP Indore</a></li>
+<li><a href="https://owasp.org/www-chapter-jaipur/">OWASP Jaipur</a></li>
+<li><a href="https://owasp.org/www-chapter-jakarta/">OWASP Jakarta</a></li>
+<li><a href="https://owasp.org/www-chapter-japan/">OWASP Japan</a></li>
+<li><a href="https://owasp.org/www-chapter-kansai/">OWASP Kansai</a></li>
+<li><a href="https://owasp.org/www-chapter-kerala/">OWASP Kerala</a></li>
+<li><a href="https://owasp.org/www-chapter-kuwait-city/">OWASP Kuwait City</a></li>
+<li><a href="https://owasp.org/www-chapter-madurai/">OWASP Madurai</a></li>
+<li><a href="https://owasp.org/www-chapter-mayiladuthurai/">OWASP Mayiladuthurai</a></li>
+<li><a href="https://owasp.org/www-chapter-meerut/">OWASP Meerut</a></li>
+<li><a href="https://owasp.org/www-chapter-mumbai/">OWASP Mumbai</a></li>
+<li><a href="https://owasp.org/www-chapter-nagoya/">OWASP Nagoya</a></li>
+<li><a href="https://owasp.org/www-chapter-nagpur/">OWASP Nagpur</a></li>
+<li><a href="https://owasp.org/www-chapter-namakkal/">OWASP Namakkal</a></li>
+<li><a href="https://owasp.org/www-chapter-nepal/">OWASP Nepal</a></li>
+<li><a href="https://owasp.org/www-chapter-noida/">OWASP Noida</a></li>
+<li><a href="https://owasp.org/www-chapter-okinawa/">OWASP Okinawa</a></li>
+<li><a href="https://owasp.org/www-chapter-pune/">OWASP Pune</a></li>
+<li><a href="https://owasp.org/www-chapter-riyadh/">OWASP Riyadh</a></li>
+<li><a href="https://owasp.org/www-chapter-sanaa/">OWASP Sanaa</a></li>
+<li><a href="https://owasp.org/www-chapter-seoul/">OWASP Seoul</a></li>
+<li><a href="https://owasp.org/www-chapter-singapore/">OWASP Singapore</a></li>
+<li><a href="https://owasp.org/www-chapter-surat/">OWASP Surat</a></li>
+<li><a href="https://owasp.org/www-chapter-taiwan/">OWASP Taiwan</a></li>
+<li><a href="https://owasp.org/www-chapter-the-northcap-universtiy/">OWASP The Northcap University</a></li>
+<li><a href="https://owasp.org/www-chapter-tiruvallur/">OWASP Tiruvallur</a></li>
+<li><a href="https://owasp.org/www-chapter-vellore/">OWASP Vellore</a></li>
+</ul>
+</div>
+<div class="region">
+<h4><a name="Europe"></a>Europe</h4>
+<ul>
+
+<li><a href="https://owasp.org/www-chapter-aarhus/">OWASP Aarhus</a></li>
+<li><a href="https://owasp.org/www-chapter-armenia/">OWASP Armenia</a></li>
+<li><a href="https://owasp.org/www-chapter-barcelona/">OWASP Barcelona</a></li>
+<li><a href="https://owasp.org/www-chapter-belfast/">OWASP Belfast</a></li>
+<li><a href="https://owasp.org/www-chapter-belgium/">OWASP Belgium</a></li>
+<li><a href="https://owasp.org/www-chapter-bilbao/">OWASP Bilbao</a></li>
+<li><a href="https://owasp.org/www-chapter-birmingham-uk/">OWASP Birmingham, UK</a></li>
+<li><a href="https://owasp.org/www-chapter-bristol-uk/">OWASP Bristol, UK</a></li>
+<li><a href="https://owasp.org/www-chapter-cambridge/">OWASP Cambridge</a></li>
+<li><a href="https://owasp.org/www-chapter-cluj/">OWASP Cluj</a></li>
+<li><a href="https://owasp.org/www-chapter-copenhagen/">OWASP Copenhagen</a></li>
+<li><a href="https://owasp.org/www-chapter-cork/">OWASP Cork</a></li>
+<li><a href="https://owasp.org/www-chapter-croatia/">OWASP Croatia</a></li>
+<li><a href="https://owasp.org/www-chapter-czech-republic/">OWASP Czech Republic</a></li>
+<li><a href="https://owasp.org/www-chapter-dnipro/">OWASP Dnipro</a></li>
+<li><a href="https://owasp.org/www-chapter-dorset/">OWASP Dorset</a></li>
+<li><a href="https://owasp.org/www-chapter-dublin/">OWASP Dublin</a></li>
+<li><a href="https://owasp.org/www-chapter-france/">OWASP France</a></li>
+<li><a href="https://owasp.org/www-chapter-geneva/">OWASP Geneva</a></li>
+<li><a href="https://owasp.org/www-chapter-germany/">OWASP Germany</a></li>
+<li><a href="https://owasp.org/www-chapter-gothenburg/">OWASP Gothenburg</a></li>
+<li><a href="https://owasp.org/www-chapter-hungary/">OWASP Hungary</a></li>
+<li><a href="https://owasp.org/www-chapter-israel/">OWASP Israel</a></li>
+<li><a href="https://owasp.org/www-chapter-italy/">OWASP Italy</a></li>
+<li><a href="https://owasp.org/www-chapter-kyiv/">OWASP Kyiv</a></li>
+<li><a href="https://owasp.org/www-chapter-london/">OWASP London</a></li>
+<li><a href="https://owasp.org/www-chapter-malmo/">OWASP Malmo</a></li>
+<li><a href="https://owasp.org/www-chapter-manchester/">OWASP Manchester</a></li>
+<li><a href="https://owasp.org/www-chapter-maribor/">OWASP Maribor</a></li>
+<li><a href="https://owasp.org/www-chapter-moscow/">OWASP Moscow</a></li>
+<li><a href="https://owasp.org/www-chapter-netherlands/">OWASP Netherlands</a></li>
+<li><a href="https://owasp.org/www-chapter-newcastle-uk/">OWASP Newcastle (UK)</a></li>
+<li><a href="https://owasp.org/www-chapter-north-sweden/">OWASP North Sweden</a></li>
+<li><a href="https://owasp.org/www-chapter-norway/">OWASP Norway</a></li>
+<li><a href="https://owasp.org/www-chapter-poland/">OWASP Poland</a></li>
+<li><a href="https://owasp.org/www-chapter-scotland/">OWASP Scotland</a></li>
+<li><a href="https://owasp.org/www-chapter-sofia/">OWASP Sofia Chapter</a></li>
+<li><a href="https://owasp.org/www-chapter-suffolk/">OWASP Suffolk</a></li>
+<li><a href="https://owasp.org/www-chapter-switzerland/">OWASP Switzerland</a></li>
+
+<li><a href="https://owasp.org/www-chapter-timisoara/">OWASP Timisoara</a></li>
+<li><a href="https://owasp.org/www-chapter-vienna/">OWASP Vienna</a></li>
+<li><a href="https://owasp.org/www-chapter-worcestershire/">OWASP Worcestershire</a></li>
+<li><a href="https://owasp.org/www-chapter-zhytomyr/">OWASP Zhytomyr</a></li>
+</ul>
+</div>
+<div class="region">
+<h4><a name="NorthAmerica"></a>North America</h4>
+<ul>
+<li><a href="https://owasp.org/www-chapter-aguascalientes/">OWASP Aguascalientes</a></li>
+<li><a href="https://owasp.org/www-chapter-atlanta/">OWASP Atlanta</a></li>
+<li><a href="https://owasp.org/www-chapter-austin/">OWASP Austin</a></li>
+<li><a href="https://owasp.org/www-chapter-bay-area/">OWASP Bay Area</a></li>
+<li><a href="https://owasp.org/www-chapter-boston/">OWASP Boston</a></li>
+<li><a href="https://owasp.org/www-chapter-boulder/">OWASP Boulder</a></li>
+<li><a href="https://owasp.org/www-chapter-charlotte/">OWASP Charlotte</a></li>
+<li><a href="https://owasp.org/www-chapter-cincinnati/">OWASP Cincinnati</a></li>
+<li><a href="https://owasp.org/www-chapter-columbia-sc/">OWASP Columbia SC</a></li>
+<li><a href="https://owasp.org/www-chapter-columbus/">OWASP Columbus</a></li>
+<li><a href="https://owasp.org/www-chapter-dallas/">OWASP Dallas</a></li>
+<li><a href="https://owasp.org/www-chapter-delaware/">OWASP Delaware</a></li>
+<li><a href="https://owasp.org/www-chapter-denver/">OWASP Denver</a></li>
+<li><a href="https://owasp.org/www-chapter-georgetown/">OWASP Georgetown</a></li>
+<li><a href="https://owasp.org/www-chapter-harrisburg/">OWASP Harrisburg PA</a></li>
+<li><a href="https://owasp.org/www-chapter-hartford/">OWASP CT Hartford</a></li>
+<li><a href="https://owasp.org/www-chapter-houston/">OWASP Houston</a></li>
+<li><a href="https://owasp.org/www-chapter-indianapolis/">OWASP Indianapolis</a></li>
+<li><a href="https://owasp.org/www-chapter-inland-empire/">OWASP Inland Empire</a></li>
+<li><a href="https://owasp.org/www-chapter-jacksonville/">OWASP Jacksonville</a></li>
+<li><a href="https://owasp.org/www-chapter-knoxville/">OWASP Knoxville</a></li>
+<li><a href="https://owasp.org/www-chapter-las-vegas/">OWASP Las Vegas</a></li>
+<li><a href="https://owasp.org/www-chapter-long-island/">OWASP Long Island, NY</a></li>
+<li><a href="https://owasp.org/www-chapter-los-angeles/">OWASP Los Angeles</a></li>
+<li><a href="https://owasp.org/www-chapter-madison/">OWASP Madison</a></li>
+<li><a href="https://owasp.org/www-chapter-mexico-city/">OWASP Mexico City</a></li>
+<li><a href="https://owasp.org/www-chapter-nashua/">OWASP Nashua</a></li>
+<li><a href="https://owasp.org/www-chapter-nashville/">OWASP Nashville</a></li>
+<li><a href="https://owasp.org/www-chapter-new-york-city/">OWASP New York City</a></li>
+<li><a href="https://owasp.org/www-chapter-northern-virginia/">OWASP Northern Virginia</a></li>
+<li><a href="https://owasp.org/www-chapter-oakland-county/">OWASP Oakland County, MI</a></li>
+<li><a href="https://owasp.org/www-chapter-orange-county/">OWASP Orange County</a></li>
+<li><a href="https://owasp.org/www-chapter-ottawa/">OWASP Ottawa</a></li>
+ <li><a href="https://owasp.org/www-chapter-philadelphia/">OWASP Philadelphia</a></li>
+<li><a href="https://owasp.org/www-chapter-pittsburgh/">OWASP Pittsburgh</a></li>
+<li><a href="https://owasp.org/www-chapter-portland/">OWASP Portland</a></li>
+<li><a href="https://owasp.org/www-chapter-portland-me/">OWASP Portland, Maine</a></li>
+<li><a href="https://owasp.org/www-chapter-quebec-city/">OWASP Quebec City</a></li>
+<li><a href="https://owasp.org/www-chapter-riviera-maya/">OWASP Riviera Maya</a></li>
+<li><a href="https://owasp.org/www-chapter-rochester/">OWASP Rochester</a></li>
+<li><a href="https://owasp.org/www-chapter-sacramento/">OWASP Sacramento</a></li>
+<li><a href="https://owasp.org/www-chapter-saint-louis/">OWASP Saint Louis</a></li>
+<li><a href="https://owasp.org/www-chapter-salt-lake-city/">OWASP Salt Lake</a></li>
+<li><a href="https://owasp.org/www-chapter-san-antonio/">OWASP San Antonio</a></li>
+<li><a href="https://owasp.org/www-chapter-san-jacinto-college/">OWASP San Jacinto College</a></li>
+<li><a href="https://owasp.org/www-chapter-santa-barbara/">OWASP Santa Barbara</a></li>
+<li><a href="https://owasp.org/www-chapter-seattle/">OWASP Seattle</a></li>
+<li><a href="https://owasp.org/www-chapter-south-florida/">OWASP South Florida</a></li>
+<li><a href="https://owasp.org/www-chapter-st.-george/">OWASP St. George, Utah</a></li>
+<li><a href="https://owasp.org/www-chapter-tampa/">OWASP Tampa</a></li>
+<li><a href="https://owasp.org/www-chapter-toronto/">OWASP Toronto</a></li>
+<li><a href="https://owasp.org/www-chapter-triangle-nc/">OWASP Triangle-NC</a></li>
+<li><a href="https://owasp.org/www-chapter-vancouver/">OWASP Vancouver</a></li>
+
+
+</ul>
+</div>
+<div class="region">
+<h4><a name="Oceania"></a>Oceania</h4>
+<ul>
+<li><a href="https://owasp.org/www-chapter-adelaide/">OWASP Adelaide</a></li>
+<li><a href="https://owasp.org/www-chapter-melbourne/">OWASP Melbourne</a></li>
+<li><a href="https://owasp.org/www-chapter-new-zealand/">OWASP New Zealand</a></li>
+<li><a href="https://owasp.org/www-chapter-sydney/">OWASP Sydney</a></li>
+
+
+</ul>
+</div>
+<div class="region">
+<h4><a name="SouthAmerica"></a>South America</h4>
+<ul>
+<li><a href="https://owasp.org/www-chapter-barranquilla/">OWASP Barranquilla</a></li>
+<li><a href="https://owasp.org/www-chapter-belo-horizonte/">OWASP Belo Horizonte</a></li>
+<li><a href="https://owasp.org/www-chapter-brasilia/">OWASP Brasilia</a></li>
+<li><a href="https://owasp.org/www-chapter-buenos-aires/">OWASP Buenos Aires</a></li>
+<li><a href="https://owasp.org/www-chapter-cartagena/">OWASP Cartagena</a></li>
+<li><a href="https://owasp.org/www-chapter-chile/">OWASP Chile</a></li>
+<li><a href="https://owasp.org/www-chapter-cuiaba/">OWASP Cuiaba</a></li>
+<li><a href="https://owasp.org/www-chapter-florianopolis/">OWASP Florianopolis</a></li>
+<li><a href="https://owasp.org/www-chapter-fortaleza/">OWASP Fortaleza</a></li>
+<li><a href="https://owasp.org/www-chapter-guatemala/">OWASP Guatemala</a></li>
+<li><a href="https://owasp.org/www-chapter-lima/">OWASP Lima</a></li>
+<li><a href="https://owasp.org/www-chapter-medellin/">OWASP Medellin</a></li>
+<li><a href="https://owasp.org/www-chapter-natal/">OWASP Natal</a></li>
+<li><a href="https://owasp.org/www-chapter-paraguay/">OWASP Paraguay</a></li>
+<li><a href="https://owasp.org/www-chapter-paraiba/">OWASP Paraíba</a></li>
+ <li><a href="https://owasp.org/www-chapter-patagonia/">OWASP Patagonia</a></li>
+<li><a href="https://owasp.org/www-chapter-porto-alegre/">OWASP Porto Alegre</a></li>
+<li><a href="https://owasp.org/www-chapter-quito/">OWASP Quito</a></li>
+<li><a href="https://owasp.org/www-chapter-recife/">OWASP Recife</a></li>
+<li><a href="https://owasp.org/www-chapter-san-pedro-sula/">OWASP San Pedro Sula</a></li>
+<li><a href="https://owasp.org/www-chapter-sao-paulo/">OWASP Sao Paulo</a></li>
+<li><a href="https://owasp.org/www-chapter-tegucigalpa/">OWASP Tegucigalpa</a></li>
+<li><a href="https://owasp.org/www-chapter-uruguay/">OWASP Uruguay</a></li>
+<li><a href="https://owasp.org/www-chapter-vina-del-mar/">OWASP Vina Del Mar</a></li>
+<li><a href="https://owasp.org/www-chapter-vitoria/">OWASP Vitoria</a></li>
+
+
+</ul>
+</div>
+</div>
+</section>
+</div>
+<hr>
+<div class="repo">
+</div>
+<div class="github-buttons">
+<a class="github-button" href="https://github.com/owasp/owasp.github.io/subscription" data-icon="octicon-eye" data-size="large" data-show-count="true" aria-label="Watch on GitHub">Watch</a>
+<a class="github-button" href="https://github.com/owasp/owasp.github.io" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star on GitHub">Star</a>
+</div>
+<div class="sidebar" role="complementary">
+<div class='owasp-sidebar-top'>
+<strong>The OWASP<sup>&reg;</sup> Foundation</strong> works to improve the security of software through its community-led open source software projects,
+hundreds of chapters worldwide, tens of thousands of members, and by hosting local and global conferences.
+</div>
+<h3 id="important-links">Important Links</h3>
+<ul>
+<li><a href="https://owasp.org/chapters/events/">Upcoming Chapter Events</a></li>
+<li><a href="https://owasporg.atlassian.net/servicedesk/customer/portal/7/group/18/create/73">Start a New Chapter/New Leader</a></li>
+<li><a href="https://owasp.org/www-policy/operational/chapter-handbook-existing">Chapter Handbook</a></li>
+<li><a href="https://owasp.org/chapters/leaders/">All Chapter Leaders</a></li>
+<li><a href="https://owasp.org/chapters/status/">Chapter Status</a></li>
+<li><a href="https://owasp.meetup.com/">OWASP Meetup</a></li>
+</ul>
+<div class='owasp-sidebar-bottom'>
+<h3>Upcoming Global Events</h3>
+<ul>
+<li><a href="https://appsecdays.org/?utm_source=owasp-web&amp;utm_medium=right-col&amp;utm_campaign=owasp.github.io" target="_blank" rel="noopener">Virtual AppSec Days, Summer</a></li>
+<li><a href="https://sf.globalappsec.org/?utm_source=owasp-web&amp;utm_medium=right-col&amp;utm_campaign=owasp.github.io" target="_blank" rel="noopener">Global AppSec SF October 19th-23rd</a></li>
+<li><a href="https://dublin.globalappsec.org/?utm_source=owasp-web&amp;utm_medium=right-col&amp;utm_campaign=owasp.github.io" target="_blank" rel="noopener">Global AppSec Dublin February 15-19th, 2021</a></li>
+</ul>
+</div>
+
+</div>
+</div>
+</main>
+<footer>
+<section class="member">
+<script type="text/javascript">
+    var members = [];
+    $(function() {
+      
+      corp_members = YAML.load('../assets/sitedata/corp_members.yml');
+      $.each(corp_members, function (index) {
+        members.push(this);
+        });
+        var randomIndexUsed = [];
+        var counter = 0;
+        var numberOfImages = 9;
+        if(members.length > 0)
+        {
+          var htmlstring = "";
+          while (counter < numberOfImages)
+          {
+              var randomIndex;
+              var img;
+
+              randomIndex = Math.floor(Math.random() * members.length);
+
+              if (randomIndexUsed.indexOf(randomIndex) == "-1")
+              {
+                  counter++;
+                  htmlstring += '<a href="'+ members[randomIndex]["url"] + '" class="member-logo" rel="sponsored noopener noreferrer" target="_blank" onclick="handleOutboundLinkClicks(event);"><img src="https://owasp.org' + members[randomIndex]["image"] + '" alt="image"/></a>';
+                  
+                  randomIndexUsed.push(randomIndex);
+              }
+          }
+
+          $("#corp_member_div").html(htmlstring);
+         
+          var randi = Math.floor(Math.random() * members.length);
+          htmlstring = '<h2>Spotlight: ' + members[randi]["name"] + '</h2>';
+          htmlstring += '<a href="'+ members[randi]["url"] + '" rel="sponsored nopener noreferrer" target="_blank" onclick="handleOutboundLinkClicks(event);"><img src="https://owasp.org' + members[randi]["image"] + '" alt="image" /></a>';
+          htmlstring += '<p>' + members[randi]["description"] + '</p>';
+          $(".member-spotlight").html(htmlstring);
+        }
+    });
+  </script>
+<div class="member-wrapper">
+<section class="member-spotlight">
+</section>
+<section class="member-list">
+<h2>Corporate Supporters</h2>
+<div id="corp_member_div">
+</div>
+<div class="member-cta">
+<a class="callout-link" href="https://owasp.org/supporters">Become a corporate supporter</a>
+</div>
+</section>
+</div>
+</section>
+<section class="footer-wrapper">
+<section class="social">
+<a href="https://owasp-slack.herokuapp.com/" aria-label="slack group" target="_blank" rel="noopener noreferrer"><i class="fa fa-lg fa-slack"></i></a>
+<a href="https://www.facebook.com/OWASPFoundation" aria-label="facebook group" target="_blank" rel="noopener noreferrer"><i class="fa fa-lg fa-facebook-square"></i></a>
+<a href="https://twitter.com/owasp" aria-label="twitter account" target="_blank" rel="noopener noreferrer"><i class="fa fa-lg fa-twitter"></i></a>
+<a href="https://www.linkedin.com/company/owasp/" aria-label="linkedin account" target="_blank" rel="noopener noreferrer"><i class="fa fa-lg fa-linkedin"></i></a>
+<a href="https://www.youtube.com/user/OWASPGLOBAL" aria-label="youtube account" target="_blank" rel="noopener noreferrer"><i class="fa fa-lg fa-youtube-square"></i></a>
+</section>
+<nav class="bot-nav" role="navigation" aria-label="secondary navigation">
+<ul>
+<li><a href="../index.html">HOME</a></li>
+<li><a href="../projects/index.html">PROJECTS</a></li>
+<li><a href="index.html">CHAPTERS</a></li>
+<li><a href="../events/index.html">EVENTS</a></li>
+<li><a href="../about/index.html">ABOUT</a></li>
+<li><a href="../www-policy/operational/privacy.html">PRIVACY</a></li>
+<li><a href="../sitemap/index.html">SITEMAP</a></li>
+<li><a href="../contact/index.html">CONTACT</a></li>
+</ul>
+</nav>
+<p class="disclaimer">
+OWASP, Open Web Application Security Project, and Global AppSec are registered trademarks and AppSec Days, AppSec California, AppSec Cali, SnowFROC, LASCON, and the OWASP logo are trademarks of the OWASP Foundation, Inc. Unless otherwise specified, all content on the site is Creative Commons Attribution-ShareAlike v4.0 and provided without warranty of service or accuracy. For more information, please refer to our <a href="../www-policy/operational/general-disclaimer.html">General Disclaimer</a>. OWASP does not endorse or recommend commercial products or services, allowing our community to remain vendor neutral with the collective wisdom of the best minds in software security worldwide. Copyright 2020, OWASP Foundation, Inc.
+</p>
+</section>
+</footer>
+</body>
+
+<!-- Mirrored from owasp.org/chapters/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 05:04:05 GMT -->
+</html>

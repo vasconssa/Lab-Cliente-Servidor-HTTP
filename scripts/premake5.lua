@@ -98,6 +98,9 @@ project "server"
     }
     
     prebuildcommands('{MKDIR} %{cfg.buildtarget.directory}/www')
+    postbuildcommands{
+        'ln -s build/%{cfg.buildtarget.abspath} ../server'
+    }
 
 
     filter "platforms:Linux64"
@@ -120,6 +123,7 @@ project "server"
     removefiles {
         path.join(DIR, "src/sx/*.c"),
     }
+    
 
 project "client"
     kind "ConsoleApp"
@@ -135,6 +139,9 @@ project "client"
     }
     
     prebuildcommands('{MKDIR} %{cfg.buildtarget.directory}/www')
+    postbuildcommands{
+        'ln -s build/%{cfg.buildtarget.abspath} ../client'
+    }
 
 
     filter "platforms:Linux64"
@@ -157,5 +164,6 @@ project "client"
     removefiles {
         path.join(DIR, "src/sx/*.c"),
     }
+
 
 --include "tests.lua"

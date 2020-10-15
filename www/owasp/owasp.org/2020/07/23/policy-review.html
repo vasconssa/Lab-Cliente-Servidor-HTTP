@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from owasp.org/2020/07/23/policy-review.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 05:04:05 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Shaping the Future of OWASP on the main website for The OWASP Foundation. OWASP is a nonprofit foundation that works to improve the security of software.">
+<meta property="og:description" content="Shaping the Future of OWASP on the main website for The OWASP Foundation. OWASP is a nonprofit foundation that works to improve the security of software.">
+<meta propery="og:title" content="Shaping the Future of OWASP | OWASP Foundation">
+<meta property="og:url" content="policy-review.html">
+<meta property="og:locale" content="en_US">
+
+<meta property="og:type" content="website" />
+<meta property="og:image" content="../../../www--site-theme/favicon.ico" />
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-XSS-Protection" content="1; mode=block">
+<script src="../../../cdn-cgi/apps/head/QYMcuzl7EEkHj4wXQRswO8EpDEg.js"></script><link rel="canonical" href="https://owasp.org/2020/07/23/policy-review" />
+
+
+
+
+<script src="../../../www--site-theme/assets/js/js.cookie.js"></script>
+<script>
+  if(Cookies.get('cookies-ok') == 'true' && window.ga === undefined)
+  {
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    ga('create', 'UA-4531126-1', 'auto');
+    ga('send', 'pageview');
+  }
+  else if (Cookies.get('cookies-ok') == 'true')
+  {
+    ga('send', 'pageview');
+  }
+
+  function handleOutboundLinkClicks(event) {
+    var href = '';
+    if(event.target.href == undefined)
+      href = event.target.parentElement.href;
+    else
+      href = event.target.href
+  if(Cookies.get('cookies-ok') == 'true'){  
+    
+    ga('send', 'event', {
+      eventCategory: 'Outbound Link',
+      eventAction: 'click',
+      eventLabel: href,
+      transport: 'beacon'
+    });
+  }
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+<link rel="stylesheet" href="../../../www--site-theme/assets/css/styles.css">
+<link rel="shortcut icon" type="images/x-icon" href="../../../www--site-theme/favicon.ico">
+<script src="../../../www--site-theme/assets/js/jquery-3.4.1.min.js"></script>
+<script src="../../../www--site-theme/assets/js/util.js"></script>
+<script src="../../../www--site-theme/assets/js/yaml.min.js"></script>
+<script src="../../../www--site-theme/assets/js/luxon.min.js"></script>
+<title>Shaping the Future of OWASP</title>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+</head>
+<body class="base-grid col-sidebar">
+<div id="blocker"></div>
+<noscript>For full functionality of this site it is necessary to enable JavaScript. Here are the <a href="https://www.enable-javascript.com/"> instructions how to enable JavaScript in your web browser</a>.</noscript>
+<header role="banner">
+<div id="banner" class="notice" aria-label="announcement">
+
+<p><a href="https://events.bizzabo.com/OWASPGlobalAppSec" target="_blank">Register now</a> for Global AppSec 2020. Great keynotes, training, over 60 education sessions, and more.</p>
+<a href="#" id="close-banner" aria-label="close announcement">
+<i class="fa fa-times"></i>
+</a>
+</div>
+<style>
+  #banner img {
+    max-width: 30em;
+  }
+
+  @media (max-width: 1131px) {
+    #banner img{
+      max-width: 30em;
+    }
+	}
+
+@media (max-width: 800px) {
+	#banner img{
+      max-width: 20em;
+    }
+}
+
+@media (max-width: 600px) {
+	#banner img{
+      max-width: 20em;
+    }
+}
+
+@media (max-width: 450px) {
+	#banner img{
+      max-width: 250px;
+  }
+}
+</style>
+<div class="header-wrapper" aria-label="main navigation">
+<nav class="alt-nav">
+<a href="#" class="menu-toggler" aria-hidden="true">
+<i class="fa fa-bars"></i>
+</a>
+<a href="../../../index.html" class="alt-logo" aria-label="go to homepage">
+<img src="../../../assets/images/logo.png" alt="OWASP logo">
+</a>
+<div id="overlay" class="remove-el">
+</div>
+
+</nav>
+<nav class="top-nav" role="navigation" aria-label="primary navigation">
+<a href="../../../index.html" class="desktop-logo" aria-label="go to homepage">
+<img src="../../../assets/images/logo.png" alt="">
+</a>
+
+<div class="interactive-wrapper">
+<form role="search" method="get" action="https://owasp.org/search">
+<div class='search-div'>
+<input id="searchString" name="searchString" class="search-bar" type="search" placeholder="Search OWASP.org" required="true">
+<button id="search-button" type="submit" class="fa fa-search">
+
+</button>
+</div>
+</form>
+<div class="nav-button" aria-label="donate to or join OWASP">
+<a href="https://owasp.org/donate?reponame=owasp.github.io" class="cta-button green">Donate</a>
+<a href="https://owasp.org/membership" class="cta-button">Join</a>
+</div>
+</div>
+</nav>
+<div id='disclaimer-container'>
+<div id="disclaimer">
+<p>This website uses cookies to analyze our traffic and only share that information with our analytics partners.</p><a class="disclaimerOK">Accept</a>
+</div>
+<div id="close-disclaimer">x</div>
+</div>
+</div>
+<script type="text/javascript">
+  $(function(){
+      
+      url = $(location).attr('href');
+      if(url.includes('www2'))
+      {
+        url = url.replace(/www2./, '');
+        $(location).attr('href',url);
+        return;
+      }
+    // this works to get data from a json file NOT in data
+      $.getJSON("../../../www--site-theme/assets/sitedata/menus.json", function(data) {
+         var listr = "<ul aria-label='header menu'>";
+         
+         var mlistr = "<ul class='mobile-menu hide-el' role='navigation' aria-label='mobile primary navigation'>";
+
+          mlistr += "<li><a href='#' class='menu-toggler' aria-hidden='true'><i class='fa fa-times'></i></a></li>";
+          mlistr += "<li>";
+          mlistr += "<form role='search' method='get' action='/search'>";   
+          mlistr += "<div class='search-div'>";
+          mlistr += "<input id='searchString' aria-label='search input' name='searchString' class='search-bar' type='search' placeholder='Search OWASP.org' required='true'>";
+          mlistr += "<button id='search-button' aria-label='search button' type='submit' class='fa fa-search' style='padding-left: 8px;'></button></div></form>";
+          mlistr += "</li>";
+          $.each(data.menus, function (ndx, menu){
+              listr += "<li><a href='" + menu.url + "'>" + menu.title + "</a>";
+
+              if(!menu.items)
+              {
+                  mlistr += "<li><a href='" + menu.url + "'>" + menu.title + "</a>";
+              }
+              
+              if(menu.items){
+                  listr += "<ul class='dropdown-menu'>";
+                  mlistr += "<button class='accordion'>" + menu.title + "</button>";
+                  mlistr += "<div class='panel'>";
+                  mlistr += "<ul>";
+                $.each(menu.items, function(ndx, item){
+                
+                  if(item.separator)
+                  {
+                      listr += "<li class='separator'>";
+                      mlistr += "<li class='separator'>";
+                  }
+                  else
+                  {
+                      listr += "<li>";
+                      mlistr += "<li>";
+                  }
+                  listr += "<a href='" + item.url + "'";
+                  mlistr += "<a href='" + item.url + "'";
+                  if(item.opentab)
+                  {
+                    listr += " target='_blank' rel='noopener noreferrer'";
+                    mlistr += " target='_blank' rel='noopener noreferrer'";
+                  }
+
+                  listr += ">" + item.title + "</a></li>";
+                  mlistr += ">" + item.title + "</a></li>";
+                });
+                listr += "</ul>";
+                mlistr += "</ul>";
+                mlistr += "</div>"
+              }
+              
+              listr += "</li>";
+              mlistr += "</li>";
+          });
+          listr += "</ul>";
+          mlistr += "<li><a href='/donate'>MAKE A DONATION</a></li>";
+          mlistr += "<li><a href='/membership'>BECOME A MEMBER</a></li>";
+          mlistr += "<li><a href='/sitemap'>SITEMAP</a></li>";
+          mlistr += "</ul>";
+          
+          $('.desktop-logo').after(listr);
+          $('#overlay').after(mlistr);
+
+          $(".accordion").click(function () {
+              $(this).toggleClass("active");
+              if($(this).next('.panel').css('display') == 'block'){
+                $(this).next('.panel').css('display', 'none');
+              }
+              else {
+                $(this).next('.panel').css('display', 'block');
+              }
+            });
+            $(".menu-toggler").click(function() {
+              $(".mobile-menu").toggleClass('hide-el');
+            });
+      });
+    });
+  </script>
+</header>
+<main role="main">
+<div class="main-wrapper">
+<h1 class="page-title">Shaping the Future of OWASP</h1>
+<div id="main" class="page-body tab" role="tabpanel" aria-labelledby="main-link" tabindex="0">
+<section class="homepage-blog">
+<a><img src="https://owasp.org/assets/images/people/staff_mike.jpg" alt="image"></a>
+<p class="author"><a>Mike McCamon</a></p>
+<p>Thursday, July 23, 2020 <p>Unlike many other groups in the software and security sector, it is important to us that our organization is shaped by our community. This of course is evident in our volunteer led Chapters and Projects along with a member-elected Board of Directors and now down to our everyday business policies. In what is planned as an annual effort, the OWASP Foundation is looking for Members to help us update our Corporate Policies. We have identified and have developed 16 core policy domains for our operations.</p>
+
+<p>Over the next eight weeks we will be sending Members links to a list of policies for their comment. The comment period for each policy is open for 21 days. Each policy will include a unique email address/link to send comments. While these policies are openly available on Github, we will not accept comments provided via Github issues or pull requests.</p>
+<p>Following the Comment Period, the Policy Review Team will review all comments, report out resolution of all comments, and then approve a policy for final Global Board approval. The complete details on the process can be found <a href="https://owasp.org/www-policy/operational/community-review-process">Community Review Process</a>. The schedule and project plan for each policy can be found at <a href="https://owasp.org/www-staff/projects/202010-policy-review.html">Policy Review Project Plan</a></p>
+<p>Obviously Members are under no obligation to participate in this review. But unlike many other groups in the software and security sector, it is important to us that our policies are shaped by our community. Thank you for your ongoing support of the OWASP Foundation.</p>
+</p>
+</section>
+</div>
+<div class="github-buttons">
+<a class="github-button" href="https://github.com/owasp/owasp.github.io/subscription" data-icon="octicon-eye" data-size="large" data-show-count="true" aria-label="Watch on GitHub">Watch</a>
+<a class="github-button" href="https://github.com/owasp/owasp.github.io" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star on GitHub">Star</a>
+</div>
+<div class="sidebar" role="complementary">
+<div class='owasp-sidebar-top'>
+<strong>The OWASP<sup>&reg;</sup> Foundation</strong> works to improve the security of software through its community-led open source software projects,
+hundreds of chapters worldwide, tens of thousands of members, and by hosting local and global conferences.
+</div>
+<div>
+<h3>Recent News & Opinions</h3>
+<ul>
+<li><a href="../31/elections-and-members.html">Announcement of 2020 Board Elections</a></li>
+<li><a href="policy-review.html">Shaping the Future of OWASP</a></li>
+<li><a href="../../06/29/announcing-andrew-executive-director.html">Andrew van der Stock named Executive Director</a></li>
+<li><a href="../../06/08/AppSecDaysSoS.html">Virtual Summer of Security 2020</a></li>
+<li><a href="https://owasp.org/2020/06/04/all-chapters-day.html">OWASP Chapters All Day</a></li>
+<li><a href="https://owasp.org/2020/04/07/AppSecDaysApril.html">Virtual AppSec Days April 2020</a></li>
+<li><a href="https://owasp.org/2020/03/17/juice-shop-v10.html">OWASP Juice Shop v10.0.0 released</a></li>
+<li><a href="https://owasp.org/events/2020/03/12/dublin-announcement.html">Global AppSec Dublin postponed to 2021</a></li>
+<li><a href="https://owasp.org/volunteer/2020/02/18/cfp.html">Dublin Call for Papers and Trainers</a></li>
+<li><a href="https://owasp.org/2020/02/11/SAMM-v2.html">OWASP SAMM v2.0 Released</a></li>
+<li><a href="https://owasp.org/website/2020/01/15/website-migration-journey.html">Our Website Migration Journey</a></li>
+<li><a href="https://owasp.org/volunteer/2019/12/03/program-team.html">Global AppSec Program Teams</a></li>
+<li><a href="https://owasp.org/website/update/2019/11/20/website-updates.html">Website Migration Update</a></li>
+<li><a href="https://owasp.org/2019/07/02/ZAP-HUD.html">ZAP Releases v2.8 with HUD</a></li>
+<li><a href="https://owasp.org/jekyll/update/2019/06/12/new-website-uses-github.html">New Website Uses GitHub</a></li>
+</ul>
+</div>
+<div class='owasp-sidebar-bottom'>
+<h3>Upcoming Global Events</h3>
+<ul>
+<li><a href="https://appsecdays.org/?utm_source=owasp-web&amp;utm_medium=right-col&amp;utm_campaign=owasp.github.io" target="_blank" rel="noopener">Virtual AppSec Days, Summer</a></li>
+<li><a href="https://sf.globalappsec.org/?utm_source=owasp-web&amp;utm_medium=right-col&amp;utm_campaign=owasp.github.io" target="_blank" rel="noopener">Global AppSec SF October 19th-23rd</a></li>
+<li><a href="https://dublin.globalappsec.org/?utm_source=owasp-web&amp;utm_medium=right-col&amp;utm_campaign=owasp.github.io" target="_blank" rel="noopener">Global AppSec Dublin February 15-19th, 2021</a></li>
+</ul>
+</div>
+</div>
+</div>
+</main>
+<footer>
+<section class="member">
+<script type="text/javascript">
+    var members = [];
+    $(function() {
+      
+      corp_members = YAML.load('../../../assets/sitedata/corp_members.yml');
+      $.each(corp_members, function (index) {
+        members.push(this);
+        });
+        var randomIndexUsed = [];
+        var counter = 0;
+        var numberOfImages = 9;
+        if(members.length > 0)
+        {
+          var htmlstring = "";
+          while (counter < numberOfImages)
+          {
+              var randomIndex;
+              var img;
+
+              randomIndex = Math.floor(Math.random() * members.length);
+
+              if (randomIndexUsed.indexOf(randomIndex) == "-1")
+              {
+                  counter++;
+                  htmlstring += '<a href="'+ members[randomIndex]["url"] + '" class="member-logo" rel="sponsored noopener noreferrer" target="_blank" onclick="handleOutboundLinkClicks(event);"><img src="https://owasp.org' + members[randomIndex]["image"] + '" alt="image"/></a>';
+                  
+                  randomIndexUsed.push(randomIndex);
+              }
+          }
+
+          $("#corp_member_div").html(htmlstring);
+         
+          var randi = Math.floor(Math.random() * members.length);
+          htmlstring = '<h2>Spotlight: ' + members[randi]["name"] + '</h2>';
+          htmlstring += '<a href="'+ members[randi]["url"] + '" rel="sponsored nopener noreferrer" target="_blank" onclick="handleOutboundLinkClicks(event);"><img src="https://owasp.org' + members[randi]["image"] + '" alt="image" /></a>';
+          htmlstring += '<p>' + members[randi]["description"] + '</p>';
+          $(".member-spotlight").html(htmlstring);
+        }
+    });
+  </script>
+<div class="member-wrapper">
+<section class="member-spotlight">
+</section>
+<section class="member-list">
+<h2>Corporate Supporters</h2>
+<div id="corp_member_div">
+</div>
+<div class="member-cta">
+<a class="callout-link" href="https://owasp.org/supporters">Become a corporate supporter</a>
+</div>
+</section>
+</div>
+</section>
+<section class="footer-wrapper">
+<section class="social">
+<a href="https://owasp-slack.herokuapp.com/" aria-label="slack group" target="_blank" rel="noopener noreferrer"><i class="fa fa-lg fa-slack"></i></a>
+<a href="https://www.facebook.com/OWASPFoundation" aria-label="facebook group" target="_blank" rel="noopener noreferrer"><i class="fa fa-lg fa-facebook-square"></i></a>
+<a href="https://twitter.com/owasp" aria-label="twitter account" target="_blank" rel="noopener noreferrer"><i class="fa fa-lg fa-twitter"></i></a>
+<a href="https://www.linkedin.com/company/owasp/" aria-label="linkedin account" target="_blank" rel="noopener noreferrer"><i class="fa fa-lg fa-linkedin"></i></a>
+<a href="https://www.youtube.com/user/OWASPGLOBAL" aria-label="youtube account" target="_blank" rel="noopener noreferrer"><i class="fa fa-lg fa-youtube-square"></i></a>
+</section>
+<nav class="bot-nav" role="navigation" aria-label="secondary navigation">
+<ul>
+<li><a href="../../../index.html">HOME</a></li>
+<li><a href="../../../projects/index.html">PROJECTS</a></li>
+<li><a href="../../../chapters/index.html">CHAPTERS</a></li>
+<li><a href="../../../events/index.html">EVENTS</a></li>
+<li><a href="../../../about/index.html">ABOUT</a></li>
+<li><a href="../../../www-policy/operational/privacy.html">PRIVACY</a></li>
+<li><a href="../../../sitemap/index.html">SITEMAP</a></li>
+<li><a href="../../../contact/index.html">CONTACT</a></li>
+</ul>
+</nav>
+<p class="disclaimer">
+OWASP, Open Web Application Security Project, and Global AppSec are registered trademarks and AppSec Days, AppSec California, AppSec Cali, SnowFROC, LASCON, and the OWASP logo are trademarks of the OWASP Foundation, Inc. Unless otherwise specified, all content on the site is Creative Commons Attribution-ShareAlike v4.0 and provided without warranty of service or accuracy. For more information, please refer to our <a href="../../../www-policy/operational/general-disclaimer.html">General Disclaimer</a>. OWASP does not endorse or recommend commercial products or services, allowing our community to remain vendor neutral with the collective wisdom of the best minds in software security worldwide. Copyright 2020, OWASP Foundation, Inc.
+</p>
+</section>
+</footer>
+</body>
+
+<!-- Mirrored from owasp.org/2020/07/23/policy-review.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Oct 2020 05:04:05 GMT -->
+</html>

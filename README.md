@@ -46,5 +46,19 @@ r.send(request)
 r.interactive()
 ```
 
+## Additional tests
+[OWASP](www.owasp.org) site was clone using httrack tool with depht value equal 2, and was saved on www/owasp folder
+
+### Server
+
+Alternatively you can use the links to executables that premake5 create on main folder.
+
+```bash
+./server 0.0.0.0 8000 www/owasp
+```
+
+![local owasp](misc/owasp.png)
+
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

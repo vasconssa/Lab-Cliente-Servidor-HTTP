@@ -1,0 +1,5 @@
+# HTTrack Website Copier Cookie File
+# This file format is compatible with Netscape cookies
+.owasp.org	TRUE	/	FALSE	1999999999	__cfduid	d9248328285adefbc87f3819c21ed6a1a1602738242
+owasp.org	TRUE	/	FALSE	1999999999	SameSite	Lax
+
