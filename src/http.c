@@ -142,18 +142,15 @@ bool parse_response(const char* msg, Response* response) {
     line = strtok(message, "\r\n");
     while (line) {
         line_len += strlen(line);
-        printf("len: %lu\n", strlen(line));
         char* temp_msg = malloc(strlen(line));
         strcpy(temp_msg, line);
         char* token = strtok(temp_msg, ":");
         if (strcmp(temp_msg, "Content-Length") == 0) {
             token = strtok(NULL, "\r");
-            printf("lent: %d\n", atoi(token));
             response->content_length = atoi(token);
         }
         strcpy(message, msg + line_len);
         line = strtok(message, "\r\n");
-        printf("msg: %s\n", line);
         free(temp_msg);
     }
 
@@ -166,7 +163,6 @@ bool read_line(char* tcp_buffer, int* tcp_size, char** line) {
     *line = NULL;
 
     char* temp_line = malloc(*tcp_size + 1);
-    /*printf("tcp_size: %d\n", *tcp_size);*/
     memcpy(temp_line, tcp_buffer, *tcp_size);
     temp_line[*tcp_size] = '\0';
     char* token = strstr(temp_line, "\r\n");
@@ -175,7 +171,6 @@ bool read_line(char* tcp_buffer, int* tcp_size, char** line) {
         *tcp_size = strlen(temp_line);
         *line = malloc(*tcp_size + 1);
         strcpy(*line, temp_line);
-        /*printf("head: %s\n", *line);*/
         valid = true;
         /**tcp_size += 2;*/
     }
@@ -225,7 +220,6 @@ int create_request(Request* request, char** msg) {
     size += 14;
     *msg = malloc(size);
     sprintf(*msg, "%s %s %s\r\nHost: %s\r\n\r\n", method, request->request_uri, version, addr);
-    printf("size msg: %lu\n", strlen(*msg));
 
     return size;
 }
@@ -237,7 +231,6 @@ int sendall(int fd, char* buf, int* len) {
 
     while(total < *len) {
         n = send(fd, buf + total, bytesleft, 0);
-        printf("send %d\n", n);
         if (n == -1) {
             break;
         }

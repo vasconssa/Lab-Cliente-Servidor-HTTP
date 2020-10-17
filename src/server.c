@@ -128,7 +128,6 @@ bool read_request(int fd, Request* request) {
         free(line);
     }
     free(line_temp_buffer);
-    printf("aki\n");
 
     return status_line_found && req_finished;
 
@@ -167,7 +166,6 @@ void* communicate(void* fd) {
             fseek(file, 0, SEEK_END);
             size = ftell(file);
             file_buf = malloc(size);
-            printf("size file: %d\n", size);
             rewind(file);
             fread(file_buf, sizeof(char), size, file);
             fclose(file);
@@ -308,7 +306,6 @@ int main(int argc, char* argv[]) {
 
             slot[count].fd = new_fd;
             slot[count].tid = tid;
-            printf("count: %d\n", count);
             // We try create a thread MAX_THREAD_CREATE_TRIES, if we can't, we shutdown socket
             // and wait all running threads to finish
             int rc = pthread_create(&tid, NULL, communicate, (void *)&slot[count]);
