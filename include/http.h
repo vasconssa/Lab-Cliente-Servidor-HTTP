@@ -27,11 +27,11 @@ typedef struct Request {
     Method method;
     char* request_addr;
     char* request_uri;
-    int version;
+    unsigned int version;
 } Request;
 
 typedef struct Response {
-    int version;
+    unsigned int version;
     StatusCode status;
     int content_length;
     char* data;

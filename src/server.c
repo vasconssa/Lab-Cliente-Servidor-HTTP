@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -11,8 +12,9 @@
 #include "http.h"
 
 #define BACKLOG 10
-// Max file size: 1 MB
-#define MAX_FILE_SIZE 1048576 
+#define MAX_THREADS 150
+#define MAX_THREAD_CREATE_TRIES 10
+#define BUFFER_SIZE 2048
 
 char* main_dir = "./";
 
@@ -24,7 +26,7 @@ void* get_in_addr(struct sockaddr* sa) {
 }
 
 struct thread_data {
-    int id;
+    pthread_t tid;
     int fd;
 };
 
@@ -32,14 +34,13 @@ struct thread_data {
 
 // Parse Status Line : Method SP Request-URI SP HTTP-Version CRLF
 bool read_request(int fd, Request* request) {
-    bool valid_line = false;
     bool status_line_found = false;
     char* line;
-    char temp_buffer[2048];
+    char temp_buffer[BUFFER_SIZE];
     char* line_temp_buffer;
-    memset(temp_buffer, 'a', 2048);
+    memset(temp_buffer, 'a', BUFFER_SIZE);
 
-    int total_received = recv(fd, temp_buffer, 2048, 0);
+    int total_received = recv(fd, temp_buffer, BUFFER_SIZE, 0);
     int num_bytes = total_received;
     if (num_bytes == -1 || total_received == 0) {
         perror("recv");
@@ -50,42 +51,53 @@ bool read_request(int fd, Request* request) {
     bool complete_line = false;
     bool req_finished = false;
 
+    // recv () does not guarantee that all bytes will be received, nor do we know if the entire 
+    // request will be received in just one call from recv ()., recv () does not guarantee 
+    // that all the bytes will be received, or as we all know if the request will be received in one recv () call.
+    //  Although in most cases it doesn't happen, we may have to use two or more recv () to receive 
+    //  a complete line, so we cannot discard the data from the previous call, until we read a complete 
+    //  line, Although in most cases does not happen, we have to use two or more recv () to get a complete 
+    //  line, then we can not discard data from the previous chamanda while not read a complete line
+
     int line_temp_buffer_size = total_received;
     line_temp_buffer = malloc(line_temp_buffer_size);
+    // Copy received data to persistent data buffer(line_temp_buffer)
     memcpy(line_temp_buffer, temp_buffer, total_received);
     while (!complete_line) {
-        if (read_line(line_temp_buffer, &num_bytes, &line)) {
+        bool line_read = false;
+        // try read one line, the first line should be the staus line
+        line_read = read_line(line_temp_buffer, &num_bytes, &line);
+        if (line_read) {
             status_line_found = parse_req_statusline(line, request);
             complete_line = true;
             free(line);
         }
-        printf("num_bytes: %d\n", num_bytes);
 
-        if (num_bytes > 0 && num_bytes < line_temp_buffer_size) {
-            /*memmove(temp_buffer, temp_buffer + num_bytes, 2048 - num_bytes);*/
+        // If we could read a line, maybe buffer still have data, so we move unread data to begin of
+        // persistent data buffer, in case a line was not read, it means the was a line in the current buffer,
+        // so we must keep data in buffer intact and reallocate more space for incoming data, that way we can 
+        // append received data in this space
+        if (num_bytes > 0 && line_read) {
             memmove(line_temp_buffer, line_temp_buffer + num_bytes, line_temp_buffer_size - num_bytes);
-            /*memset(temp_buffer + (2048 - num_bytes), 'a', num_bytes);*/
             int n = num_bytes;
             num_bytes = line_temp_buffer_size - num_bytes;
             line_temp_buffer_size -= n;
         } else {
-            total_received = recv(fd, temp_buffer, 2048, 0);
+            total_received = recv(fd, temp_buffer, BUFFER_SIZE, 0);
             line_temp_buffer = realloc(line_temp_buffer, line_temp_buffer_size + total_received);
             memcpy(line_temp_buffer + line_temp_buffer_size, temp_buffer, total_received);
             line_temp_buffer_size += total_received;
             num_bytes = line_temp_buffer_size;
-            if (num_bytes == -1 || total_received == 0) {
+            if (total_received == -1) {
                 perror("recv");
-                return -1;
+                shutdown(fd, 2);
+                pthread_exit(NULL);
             }
         }
     }
-    /*num_bytes = line_temp_buffer_size - num_bytes;*/
-    /*free(line_temp_buffer);*/
 
-    /*printf("buf: %s\n", line_temp_buffer);*/
+    // Here we keep reading lines until we receive only \r\n after a read line
     while (!req_finished) {
-        printf("num_bytes aki: %d\n", num_bytes);
         complete_line = false;
         while (!complete_line) {
             complete_line = read_line(line_temp_buffer, &num_bytes, &line);
@@ -94,22 +106,21 @@ bool read_request(int fd, Request* request) {
             }
 
             if (!req_finished) {
-                if (num_bytes > 0 && num_bytes < line_temp_buffer_size) {
-                    /*memmove(temp_buffer, temp_buffer + num_bytes, 2048 - num_bytes);*/
+                if (num_bytes > 0 && complete_line) {
                     memmove(line_temp_buffer, line_temp_buffer + num_bytes, line_temp_buffer_size - num_bytes);
-                    /*memset(temp_buffer + (2048 - num_bytes), 'a', num_bytes);*/
                     int n = num_bytes;
                     num_bytes = line_temp_buffer_size - num_bytes;
                     line_temp_buffer_size -= n;
                 } else {
-                    total_received = recv(fd, temp_buffer, 2048, 0);
+                    total_received = recv(fd, temp_buffer, BUFFER_SIZE, 0);
                     line_temp_buffer = realloc(line_temp_buffer, line_temp_buffer_size + total_received);
                     memcpy(line_temp_buffer + line_temp_buffer_size, temp_buffer, total_received);
                     line_temp_buffer_size += total_received;
                     num_bytes = line_temp_buffer_size;
-                    if (num_bytes == -1 || total_received == 0) {
+                    if (total_received == -1) {
                         perror("recv");
-                        return -1;
+                        shutdown(fd, 2);
+                        pthread_exit(NULL);
                     }
                 }
             }
@@ -125,7 +136,6 @@ bool read_request(int fd, Request* request) {
 
 void* communicate(void* fd) {
     struct thread_data data = *((struct thread_data*)fd);
-    int n = data.id;
     int new_fd = data.fd;
     int rv = 0;
     Request request;
@@ -133,42 +143,43 @@ void* communicate(void* fd) {
 
     bool res = read_request(new_fd, &request);
     if (res) {
-        printf("valid\n");
-    } else {
-        printf("error\n");
-    }
-    printf("METHOD: %u, URI: %s, VERSION: %u.%u\n", request.method, request.request_uri, 
+        printf("Received Request: \n");
+        printf("METHOD: %u, URI: %s, VERSION: %u.%u\n", request.method, request.request_uri, 
                                                     version_major(request.version), version_minor(request.version));
-    printf("URI size: %lu\n", strlen(request.request_uri));
+    }
+
+    // set filename to index.html case request uri is only /
     if(strcmp(request.request_uri, "/") == 0) {
         request.request_uri = realloc(request.request_uri, strlen("index.html") + 1);
         strcpy(request.request_uri,  "/index.html");
     }
 
+    // Concatenate main directory with request uri
     char* file_path = malloc(strlen(main_dir) + strlen(request.request_uri) + 2);
     strcpy(file_path, main_dir);
     strcat(file_path, request.request_uri);
 
-    FILE* file = fopen(file_path, "rb");
-    printf("file: %s\n", file_path);
+    FILE* file = fopen(file_path, "rb+");
     int size = 0;
     char* file_buf = NULL;
-    if (file != NULL) {
-        fseek(file, 0, SEEK_END);
-        size = ftell(file);
-        if (size >= 0) {
+    if (errno == 0) {
+        if (file != NULL) {
+            fseek(file, 0, SEEK_END);
+            size = ftell(file);
             file_buf = malloc(size);
             printf("size file: %d\n", size);
             rewind(file);
             fread(file_buf, sizeof(char), size, file);
-        } else {
-            size = 0;
+            fclose(file);
         }
-        fclose(file);
+    } else {
+        perror("Error: file: ");
     }
     char* resp_msg = NULL;
     Response response;
     response.version = request.version;
+    // Analyze request and choose return code, we send a custom html in case
+    // of BAD_REQUEST of NOT_FOUND file
     if (!res) {
         response.status = BAD_REQUEST;
         char* bad_req = "<html>400 Bad Request</html>";
@@ -189,15 +200,16 @@ void* communicate(void* fd) {
         }
     }
     size = create_response(&response, &resp_msg);
-    /*resp[size - 1] = '\0';*/
-    /*resp[size] = '\0';*/
-    printf("size: %d\n", size);
-    /*printf("%s\n", resp);*/
+    printf("Sent response:\n");
+    printf("STATUS: %u, Content-Length: %d, VERSION: %u.%u\n", response.status, response.content_length, 
+                                                version_major(response.version), version_minor(response.version));
 
     rv = sendall(new_fd, resp_msg, &size);
     if (rv == -1) {
         perror("send");
     }
+
+    // Clean up memory
     destroy_request(&request);
     destroy_response(&response);
     free(resp_msg);
@@ -209,16 +221,19 @@ void* communicate(void* fd) {
 
 int main(int argc, char* argv[]) {
     if (argc != 4) {
-        fprintf(stderr, "Usage: ./client server_addr port /path/to/file\n");
+        fprintf(stderr, "Usage: ./server server_addr port /path/to/main/directory\n");
         exit(1);
     }
     main_dir = argv[3];
+    // Hints for getaddrinfo
     struct addrinfo hints = { 
         .ai_flags = AI_PASSIVE,
         .ai_family = AF_INET,
         .ai_socktype = SOCK_STREAM, 0};
 
     struct addrinfo *servinfo;
+
+    // fill servinfo struct
     int rv = getaddrinfo(argv[1], argv[2], &hints, &servinfo);
     if (rv != 0) {
         printf("getaddrinfo: %s\n", gai_strerror(rv));
@@ -227,6 +242,8 @@ int main(int argc, char* argv[]) {
 
     struct addrinfo* p;
     int sockfd;
+    int r;
+    // Stop on first valid address and bind it to socket
     for (p = servinfo; p != NULL; p = p->ai_next) {
         sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
         if (sockfd == -1) {
@@ -235,7 +252,7 @@ int main(int argc, char* argv[]) {
         }
 
         int yes = 1;
-        int r = setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
+        r = setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
         if (r == -1) {
             perror("setsockopt");
             return 1;
@@ -252,6 +269,12 @@ int main(int argc, char* argv[]) {
     }
     freeaddrinfo(servinfo);
 
+    // It's possible that any bind works, so we finishes server
+    if (r == -1) {
+        printf("Was not possible bind any valid address, please check addres and port for valid range\n");
+        return 1;
+    }
+
     rv = listen(sockfd, BACKLOG);
     if (rv == -1) {
         perror("listen");
@@ -263,44 +286,49 @@ int main(int argc, char* argv[]) {
     struct sockaddr_storage their_addr;
     socklen_t sin_size;
     char s[INET6_ADDRSTRLEN];
-    int count = 0;
-    int num_slot = 0;
-    struct thread_data** slot = malloc(1 * sizeof(struct thread_data*));
-    slot[num_slot] = malloc(10 * sizeof(struct thread_data));
-    while (1) {
-        sin_size = sizeof(their_addr);
-        int new_fd = accept(sockfd, (struct sockaddr*)&their_addr, &sin_size);
-        if (new_fd == -1) {
-            perror("accept");
-            continue;
+
+    // Threads slots: thread data has to persist while thread is running, and data pointer must continue valid,
+    // so we create a array of slots, we can only have MAX_THREADS concurrent threads running, so we can reuse
+    // this slots, when threads terminates
+    struct thread_data slot[MAX_THREADS];
+    while (true) {
+        for (int count = 0; count < MAX_THREADS; count++) {
+            sin_size = sizeof(their_addr);
+            int new_fd = accept(sockfd, (struct sockaddr*)&their_addr, &sin_size);
+            if (new_fd == -1) {
+                perror("accept");
+                continue;
+            }
+            inet_ntop(their_addr.ss_family,
+                      get_in_addr((struct sockaddr*)&their_addr),
+                      s, sizeof(s));
+            printf("server: got connection from %s\n", s);
+
+            pthread_t tid = 0;
+
+            slot[count].fd = new_fd;
+            slot[count].tid = tid;
+            printf("count: %d\n", count);
+            // We try create a thread MAX_THREAD_CREATE_TRIES, if we can't, we shutdown socket
+            // and wait all running threads to finish
+            int rc = pthread_create(&tid, NULL, communicate, (void *)&slot[count]);
+            int max_tries = 0;
+            while (rc != 0 && max_tries < MAX_THREAD_CREATE_TRIES) {
+                rc = pthread_create(&tid, NULL, communicate, (void *)&slot[count]);
+                max_tries++;
+            }
+            if (rc != 0) {
+                shutdown(new_fd, 2);
+                break;
+            }
+            slot[count].tid = tid;
         }
-        inet_ntop(their_addr.ss_family,
-                  get_in_addr((struct sockaddr*)&their_addr),
-                  s, sizeof(s));
-        printf("server: got connection from %s\n", s);
 
-        pthread_t tid;
-
-        if (count > 9) {
-            count = 0;
-            num_slot++;
-            slot = realloc(slot, (num_slot + 1) * sizeof(struct thread_data*));
-            slot[num_slot] = malloc(10 * sizeof(struct thread_data));
+        for (int count = 0; count < MAX_THREADS; count++) {
+            pthread_join(slot[count].tid, NULL);
         }
-
-        slot[num_slot][count].fd = new_fd;
-        slot[num_slot][count].id = count;
-        printf("count: %d\n", count);
-        int rc = pthread_create(&tid, NULL, communicate, (void *)&slot[num_slot][count]);
-        pthread_join(tid, NULL);
-        count++;
-        
     }
 
-    for (int i = 0; i < num_slot + 1; i++) {
-        free(slot[i]);
-    }
-    free(slot);
 
     return 0;
 }

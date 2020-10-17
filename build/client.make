@@ -51,6 +51,8 @@ define PREBUILDCMDS
 endef
 define POSTBUILDCMDS
 	@echo Running postbuild commands
+	touch ../client
+	rm ../client
 	ln -s build/bin/Android-Arm/Debug/client ../client
 endef
 
@@ -69,6 +71,8 @@ define PREBUILDCMDS
 endef
 define POSTBUILDCMDS
 	@echo Running postbuild commands
+	touch ../client
+	rm ../client
 	ln -s build/bin/Win32/Debug/client ../client
 endef
 
@@ -87,6 +91,8 @@ define PREBUILDCMDS
 endef
 define POSTBUILDCMDS
 	@echo Running postbuild commands
+	touch ../client
+	rm ../client
 	ln -s build/bin/Win64/Debug/client ../client
 endef
 
@@ -105,6 +111,8 @@ define PREBUILDCMDS
 endef
 define POSTBUILDCMDS
 	@echo Running postbuild commands
+	touch ../client
+	rm ../client
 	ln -s build/bin/Linux32/Debug/client ../client
 endef
 
@@ -123,6 +131,8 @@ define PREBUILDCMDS
 endef
 define POSTBUILDCMDS
 	@echo Running postbuild commands
+	touch ../client
+	rm ../client
 	ln -s build/bin/Linux64/Debug/client ../client
 endef
 
@@ -141,6 +151,8 @@ define PREBUILDCMDS
 endef
 define POSTBUILDCMDS
 	@echo Running postbuild commands
+	touch ../client
+	rm ../client
 	ln -s build/bin/Android-Arm/Release/client ../client
 endef
 
@@ -159,6 +171,8 @@ define PREBUILDCMDS
 endef
 define POSTBUILDCMDS
 	@echo Running postbuild commands
+	touch ../client
+	rm ../client
 	ln -s build/bin/Win32/Release/client ../client
 endef
 
@@ -177,6 +191,8 @@ define PREBUILDCMDS
 endef
 define POSTBUILDCMDS
 	@echo Running postbuild commands
+	touch ../client
+	rm ../client
 	ln -s build/bin/Win64/Release/client ../client
 endef
 
@@ -195,6 +211,8 @@ define PREBUILDCMDS
 endef
 define POSTBUILDCMDS
 	@echo Running postbuild commands
+	touch ../client
+	rm ../client
 	ln -s build/bin/Linux32/Release/client ../client
 endef
 
@@ -213,6 +231,8 @@ define PREBUILDCMDS
 endef
 define POSTBUILDCMDS
 	@echo Running postbuild commands
+	touch ../client
+	rm ../client
 	ln -s build/bin/Linux64/Release/client ../client
 endef
 

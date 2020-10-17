@@ -99,7 +99,9 @@ project "server"
     
     prebuildcommands('{MKDIR} %{cfg.buildtarget.directory}/www')
     postbuildcommands{
-        'ln -s build/%{cfg.buildtarget.abspath} ../server'
+        'touch ../server',
+        'rm ../server',
+        'ln -s build/%{cfg.buildtarget.abspath} ../server',
     }
 
 
@@ -140,7 +142,9 @@ project "client"
     
     prebuildcommands('{MKDIR} %{cfg.buildtarget.directory}/www')
     postbuildcommands{
-        'ln -s build/%{cfg.buildtarget.abspath} ../client'
+        'touch ../client',
+        'rm ../client',
+        'ln -s build/%{cfg.buildtarget.abspath} ../client',
     }
 
 
