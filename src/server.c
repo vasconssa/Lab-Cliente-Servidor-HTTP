@@ -42,7 +42,7 @@ bool read_request(int fd, Request* request) {
 
     int total_received = recv(fd, temp_buffer, BUFFER_SIZE, 0);
     int num_bytes = total_received;
-    if (num_bytes == -1 || total_received == 0) {
+    if (num_bytes == -1) {
         perror("recv");
         shutdown(fd, 2);
         pthread_exit(NULL);
@@ -135,6 +135,7 @@ bool read_request(int fd, Request* request) {
 
 void* communicate(void* fd) {
     struct thread_data data = *((struct thread_data*)fd);
+    pthread_t tid = pthread_self();
     int new_fd = data.fd;
     int rv = 0;
     Request request;
@@ -142,8 +143,8 @@ void* communicate(void* fd) {
 
     bool res = read_request(new_fd, &request);
     if (res) {
-        printf("Received Request: \n");
-        printf("METHOD: %u, URI: %s, VERSION: %u.%u\n", request.method, request.request_uri, 
+        printf("[%lu]: Received Request: \n", tid);
+        printf("[%lu]: METHOD: %u, URI: %s, VERSION: %u.%u\n", tid, request.method, request.request_uri, 
                                                     version_major(request.version), version_minor(request.version));
     }
 
@@ -198,8 +199,8 @@ void* communicate(void* fd) {
         }
     }
     size = create_response(&response, &resp_msg);
-    printf("Sent response:\n");
-    printf("STATUS: %u, Content-Length: %d, VERSION: %u.%u\n", response.status, response.content_length, 
+    printf("[%lu]: Sent response:\n", tid);
+    printf("[%lu]: STATUS: %u, Content-Length: %d, VERSION: %u.%u\n", tid, response.status, response.content_length, 
                                                 version_major(response.version), version_minor(response.version));
 
     rv = sendall(new_fd, resp_msg, &size);

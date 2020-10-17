@@ -162,6 +162,7 @@ bool read_response(int fd, Response* response) {
 
 void* communicate(void* td) {
     struct thread_data data = *((struct thread_data*)td);
+    pthread_t tid = pthread_self();
     int fd = data.fd;
     char* path = data.path;
     char* addr = data.addr;
@@ -180,14 +181,14 @@ void* communicate(void* td) {
     }
     free(msg);
 
-    printf("Sent request:\n");
-    printf("METHOD: %u, URI: %s, VERSION: %u.%u\n", request.method, request.request_uri, 
+    printf("[%ld]: Sent request:\n", tid);
+    printf("[%ld]: METHOD: %u, URI: %s, VERSION: %u.%u\n", tid, request.method, request.request_uri, 
                                                 version_major(request.version), version_minor(request.version));
 
     Response response;
     bool valid = read_response(fd, &response);
-    printf("Received response:\n");
-    printf("STATUS: %u, Content-Length: %d, VERSION: %u.%u\n", response.status, response.content_length, 
+    printf("[%ld]: Received response:\n", tid);
+    printf("[%ld]: STATUS: %u, Content-Length: %d, VERSION: %u.%u\n", tid,  response.status, response.content_length, 
                                                 version_major(response.version), version_minor(response.version));
     if (valid) {
         int path_len = strlen(path);
@@ -210,7 +211,7 @@ void* communicate(void* td) {
         // Save response data
         FILE* file = fopen(file_path, "wb");
         if (file != NULL) {
-            printf("Saved file: %s\n", file_path);
+            printf("[%ld]: Saved file: %s\n", tid, file_path);
             fwrite(response.data, sizeof(char), response.content_length, file);
             fclose(file);
         }
