@@ -120,8 +120,8 @@ else ifeq ($(config),debug_linux64)
 TARGETDIR = bin/Linux64/Debug
 TARGET = $(TARGETDIR)/client
 OBJDIR = obj/Linux64/Debug/client
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fomit-frame-pointer -g -std=gnu11 -Wall -Wextra -Wundef -msse2
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fomit-frame-pointer -g -Wall -Wextra -Wundef -msse2
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fomit-frame-pointer -O2 -g -std=gnu11 -Wall -Wextra -Wundef -msse2
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fomit-frame-pointer -O2 -g -Wall -Wextra -Wundef -msse2
 LIBS += bin/Linux64/Debug/libcommon.a -ldl -lpthread -lm
 LDDEPS += bin/Linux64/Debug/libcommon.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -rdynamic
@@ -220,8 +220,8 @@ else ifeq ($(config),release_linux64)
 TARGETDIR = bin/Linux64/Release
 TARGET = $(TARGETDIR)/client
 OBJDIR = obj/Linux64/Release/client
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fomit-frame-pointer -g -std=gnu11 -Wall -Wextra -Wundef -msse2
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fomit-frame-pointer -g -Wall -Wextra -Wundef -msse2
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fomit-frame-pointer -O2 -g -std=gnu11 -Wall -Wextra -Wundef -msse2
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fomit-frame-pointer -O2 -g -Wall -Wextra -Wundef -msse2
 LIBS += bin/Linux64/Release/libcommon.a -ldl -lpthread -lm
 LDDEPS += bin/Linux64/Release/libcommon.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -rdynamic

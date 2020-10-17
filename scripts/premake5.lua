@@ -152,6 +152,7 @@ project "client"
     system "Linux"
     architecture "x86_64"
     symbols "on"
+    optimize "On"
 
     links {
         "common",

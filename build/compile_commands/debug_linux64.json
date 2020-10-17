@@ -20,6 +20,6 @@
           {
             "directory": "/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build",
             "file": "/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/src/client.c",
-            "command": "cc -MMD -MP -I/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/include -I/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/3rdparty -m64 -fomit-frame-pointer -g -std=gnu11 -Wall -Wextra -Wundef -msse2 -o /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build/obj/Linux64/Debug/client/client.o -MF /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build/obj/Linux64/Debug/client/client.d -c /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/src/client.c"
+            "command": "cc -MMD -MP -I/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/include -I/home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/3rdparty -m64 -fomit-frame-pointer -O2 -g -std=gnu11 -Wall -Wextra -Wundef -msse2 -o /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build/obj/Linux64/Debug/client/client.o -MF /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/build/obj/Linux64/Debug/client/client.d -c /home/vasconssa/Documents/ita/ces-35/lab2/Lab-Cliente-Servidor-HTTP/src/client.c"
           }
 ]
