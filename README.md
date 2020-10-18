@@ -1,5 +1,10 @@
 # Lab-Cliente-Servidor-HTTP
 Laboratório: Implementando Cliente e Servidor HTTP
+Alunos: 
+Raphael de Vasconcelos Nascimento;
+Felipe Mourad Pereira;
+Felipe dos Santos Bomfim;
+
 
 ## Prerequisites
 - premake5 (optional) pre generated make files are in build folder so you don't necessarily need generate them
