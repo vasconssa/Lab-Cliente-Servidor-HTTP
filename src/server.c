@@ -12,7 +12,9 @@
 #include "http.h"
 
 #define BACKLOG 10
+#ifndef MAX_THREADS
 #define MAX_THREADS 150
+#endif
 #define MAX_THREAD_CREATE_TRIES 10
 #define BUFFER_SIZE 2048
 

@@ -22,7 +22,7 @@ Create desired files inside desired folder, in examples was used www/ folder
 
 ### Server
 
-Create files to be served on desired folder e run server, use CTRL-C to terminate program.
+Create files to be served on desired folder and run server, use CTRL-C to terminate program.
 
 ```bash
 cd build/bin/Linux64/Debug
@@ -94,6 +94,28 @@ Run server from main project directory:
 
 ![par client](misc/parclient.png)
 ![par server](misc/parserver.png)
+
+### Maximum parallel threads
+The default value to maximum of concurrent threads is 150, but you can override this value with make.
+
+```bash
+make  CFLAGS=-DMAX_THREADS 200 -C build config=debug_linux64
+```
+
+We will test if the server can handle more than MAX_THREADS parallel requests, for this we will create 
+250 index(i).html files inside www folder.
+
+```bash
+echo "<html>Hello, world</html>\n" | tee www/index{0..250}.html
+./server 0.0.0.0 8000 .
+```
+
+```bash
+./client $(python -c "exec(\"args = ''\nfor i in range(300): args = args + 'http://localhost:8000/www/index' + str(i) + '.html '\nprint(args)\")")
+```
+
+![max par client](misc/maxparclient.png)
+![max par server](misc/maxparserver.png)
 
 **P.S: You can use `git clean -f -x` to clean main directory**
 
