@@ -209,7 +209,7 @@ void* communicate(void* td) {
         }
         
         // Save response data
-        FILE* file = fopen(file_path, "wb");
+        FILE* file = fopen(file_path, "wb+");
         if (file != NULL) {
             printf("[%ld]: Saved file: %s\n", tid, file_path);
             fwrite(response.data, sizeof(char), response.content_length, file);

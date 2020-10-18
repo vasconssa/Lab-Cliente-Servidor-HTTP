@@ -174,6 +174,9 @@ void* communicate(void* fd) {
             fclose(file);
         }
     } else {
+        if (file != NULL){
+            fclose(file);
+        }
         perror("Error: file: ");
     }
     char* resp_msg = NULL;
@@ -185,8 +188,8 @@ void* communicate(void* fd) {
         response.status = BAD_REQUEST;
         char* bad_req = "<html>400 Bad Request</html>";
         response.content_length = strlen(bad_req);
-        response.data = malloc(strlen(bad_req) + 1);
-        strcpy(response.data, bad_req);
+        response.data = malloc(strlen(bad_req));
+        memcpy(response.data, bad_req, response.content_length);
     } else {
         if (size >= 0 && file != NULL) {
             response.status = OK;
@@ -196,8 +199,8 @@ void* communicate(void* fd) {
             response.status = NOT_FOUND;
             char* not_found = "<html>404 Not Found</html>";
             response.content_length = strlen(not_found);
-            response.data = malloc(strlen(not_found) + 1);
-            strcpy(response.data, not_found);
+            response.data = malloc(strlen(not_found));
+            memcpy(response.data, not_found, response.content_length);
         }
     }
     size = create_response(&response, &resp_msg);
